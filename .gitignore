@@ -1,0 +1,4 @@
+.vscode
+
+mnist.egg-info
+__pycache__

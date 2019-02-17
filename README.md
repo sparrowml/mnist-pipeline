@@ -1,16 +1,12 @@
 # MNIST Classifier Pipeline
-MNIST transfer learning pipeline that trains an MNIST classifier and creates a model file that can be run in the browser. Although this is a toy example, the batteries are included.
+MNIST classifier pipeline that creates a digit classifier with features that can be exported.
 
 The pattern of this pipeline:
 ```
-Public Dataset -> Compiled Training Dataset -> Trained Model
-                                                    |
-Public Dataset -> Compiled Training Dataset -> Trained Model -> Inference Weights
+Public Dataset -> Compiled Training Dataset -> Trained Model  -> Feature Extractor
 ```
 
 More concretely:
 ```
-Fashion MNIST -> TFRecords -> CNN Classifier
-                                    |
-MNIST         -> TFRecords -> CNN Classifier -> TensorFlow.js Model
+MNIST          -> TFRecords                 -> CNN Classifier -> Saved Weights
 ```
