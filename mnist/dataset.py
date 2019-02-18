@@ -11,6 +11,7 @@ from typing import Tuple
 import numpy as np
 import tensorflow as tf
 
+from .config import MnistConfig
 from .preprocess import preprocess
 
 
@@ -59,11 +60,14 @@ def build_dataset(train_path: str, test_path: str) -> None:
 def load_dataset(file_path: str) -> Tuple[tf.Tensor, tf.Tensor]:
     """Create a dataset generator from a TFRecord path."""
     dataset = tf.data.TFRecordDataset(file_path)
-    dataset = dataset.map(_parse_example, num_parallel_calls=4)
-    dataset = dataset.shuffle(1024)
+    dataset = dataset.map(
+        _parse_example,
+        num_parallel_calls=MnistConfig.n_dataset_threads,
+    )
+    dataset = dataset.shuffle(MnistConfig.shuffle_buffer_size)
     dataset = dataset.repeat()
-    dataset = dataset.batch(128)
+    dataset = dataset.batch(MnistConfig.batch_size)
     iterator = dataset.make_one_shot_iterator()
     images, labels = iterator.get_next()
-    images = tf.reshape(images, [-1, 28, 28, 1])
+    images = tf.reshape(images, [-1, *MnistConfig.image_shape()])
     return images, labels

@@ -5,6 +5,7 @@ from typing import Optional
 
 import tensorflow as tf
 
+from .config import MnistConfig
 from .dataset import load_dataset
 from .preprocess import preprocess
 from .model import classifier
@@ -23,14 +24,14 @@ def train(train_path: str, test_path: str, save_path: Optional[str] = None) -> O
     )
     model.fit(
         x_train, y_train,
-        verbose=1,
-        epochs=2,
-        steps_per_epoch=60000 // 128,
+        verbose=MnistConfig.verbose,
+        epochs=MnistConfig.n_epochs,
+        steps_per_epoch=MnistConfig.steps_per_epoch(),
     )
     _, accuracy = model.evaluate(
         x_test, y_test,
-        verbose=1,
-        steps=10000 // 128,
+        verbose=MnistConfig.verbose,
+        steps=MnistConfig.validation_steps(),
     )
     print(f'Test accuracy: {accuracy:0.3f}')
     if save_path:
