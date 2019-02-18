@@ -6,13 +6,14 @@ from typing import Optional
 import tensorflow as tf
 
 from .dataset import load_dataset
+from .preprocess import preprocess
 from .model import classifier
 
 
 def train(train_path: str, test_path: str, save_path: Optional[str] = None) -> Optional[tf.keras.Model]:
     """Train the model."""
-    x_train, y_train = load_dataset(train_path)
-    x_test, y_test = load_dataset(test_path)
+    x_train, y_train = preprocess(*load_dataset(train_path))
+    x_test, y_test = preprocess(*load_dataset(test_path))
     model = classifier(x_train)
     model.compile(
         loss=tf.keras.losses.categorical_crossentropy,
@@ -23,17 +24,19 @@ def train(train_path: str, test_path: str, save_path: Optional[str] = None) -> O
     model.fit(
         x_train, y_train,
         verbose=1,
-        validation_data=(x_test, y_test),
+        epochs=2,
         steps_per_epoch=60000 // 128,
     )
-    _loss, _accuracy = model.evaluate(
-        tf.keras.Input(tensor=x_test), y_test,
+    _, accuracy = model.evaluate(
+        x_test, y_test,
         verbose=1,
-        steps=1,
+        steps=10000 // 128,
     )
-    print('Test loss:', _loss)
-    print('Test accuracy:', _accuracy)
+    print(f'Test accuracy: {accuracy:0.3f}')
     if save_path:
-        model.save(save_path)
+        model.save_weights(
+            save_path,
+            overwrite=True,
+        )
         return
     return model

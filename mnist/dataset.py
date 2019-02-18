@@ -61,9 +61,9 @@ def load_dataset(file_path: str) -> Tuple[tf.Tensor, tf.Tensor]:
     dataset = tf.data.TFRecordDataset(file_path)
     dataset = dataset.map(_parse_example, num_parallel_calls=4)
     dataset = dataset.shuffle(1024)
+    dataset = dataset.repeat()
     dataset = dataset.batch(128)
     iterator = dataset.make_one_shot_iterator()
-    images, label = iterator.get_next()
+    images, labels = iterator.get_next()
     images = tf.reshape(images, [-1, 28, 28, 1])
-    images, label = preprocess(images, label)
-    return tf.keras.Input(tensor=images), label
+    return images, labels
