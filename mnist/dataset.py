@@ -6,7 +6,7 @@ Compile a TFRecord dataset for training. Each example has the following form:
     "label": <class label>
 }
 """
-from typing import Tuple
+from typing import Tuple, Optional
 
 import numpy as np
 import tensorflow as tf
@@ -57,17 +57,17 @@ def build_dataset(train_path: str, test_path: str) -> None:
     _write_holdout(x_test, y_test, test_path)
 
 
-def load_dataset(file_path: str) -> Tuple[tf.Tensor, tf.Tensor]:
+def load_dataset(file_path: str, config: Optional[MnistConfig] = MnistConfig()) -> Tuple[tf.Tensor, tf.Tensor]:
     """Create a dataset generator from a TFRecord path."""
     dataset = tf.data.TFRecordDataset(file_path)
     dataset = dataset.map(
         _parse_example,
-        num_parallel_calls=MnistConfig.n_dataset_threads,
+        num_parallel_calls=config.n_dataset_threads,
     )
-    dataset = dataset.shuffle(MnistConfig.shuffle_buffer_size)
+    dataset = dataset.shuffle(config.shuffle_buffer_size)
     dataset = dataset.repeat()
-    dataset = dataset.batch(MnistConfig.batch_size)
+    dataset = dataset.batch(config.batch_size)
     iterator = dataset.make_one_shot_iterator()
     images, labels = iterator.get_next()
-    images = tf.reshape(images, [-1, *MnistConfig.image_shape()])
+    images = tf.reshape(images, [-1, *config.image_shape])
     return images, labels

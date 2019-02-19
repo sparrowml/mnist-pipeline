@@ -1,14 +1,17 @@
 """
 Define the structure of the model.
 """
-from typing import Tuple, Union
+from typing import Tuple, Union, Optional
 
 import tensorflow as tf
 
 from .config import MnistConfig
 
 
-def feature_extractor(images: tf.keras.Input) -> tf.Tensor:
+def feature_extractor(
+        images: tf.keras.Input,
+        config: Optional[MnistConfig] = MnistConfig()
+) -> tf.Tensor:
     """Define feature extractor."""
     hidden = tf.keras.layers.Conv2D(
         filters=32,
@@ -21,15 +24,18 @@ def feature_extractor(images: tf.keras.Input) -> tf.Tensor:
         activation='relu',
     )(hidden)
     hidden = tf.keras.layers.MaxPool2D()(hidden)
-    hidden = tf.keras.layers.Dropout(MnistConfig.dropout1_rate)(hidden)
+    hidden = tf.keras.layers.Dropout(config.dropout1_rate)(hidden)
     return hidden
 
 
-def classifier(images: tf.keras.Input) -> tf.keras.Model:
+def classifier(
+        images: tf.keras.Input,
+        config: Optional[MnistConfig] = MnistConfig()
+) -> tf.keras.Model:
     """Define classifier."""
     hidden = feature_extractor(images)
     hidden = tf.keras.layers.Flatten()(hidden)
     hidden = tf.keras.layers.Dense(128, activation='relu')(hidden)
-    hidden = tf.keras.layers.Dropout(MnistConfig.dropout2_rate)(hidden)
-    predictions = tf.keras.layers.Dense(MnistConfig.n_classes, activation='softmax')(hidden)
+    hidden = tf.keras.layers.Dropout(config.dropout2_rate)(hidden)
+    predictions = tf.keras.layers.Dense(config.n_classes, activation='softmax')(hidden)
     return tf.keras.Model(inputs=images, outputs=predictions)
