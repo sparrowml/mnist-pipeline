@@ -1,0 +1,25 @@
+image: python:3.6
+
+stages:
+  - data
+  - train
+  - deploy
+
+before_script:
+  - pip install tensorflow pyyaml
+  - pip install -e .
+
+build_dataset:
+  stage: data
+  script: make build-dataset
+  when: on_success
+
+train_model:
+  stage: train
+  script: make train-model
+  when: on_success
+
+save_feature_extractor:
+  stage: deploy
+  script: make save-feature-extractor
+  when: on_success
