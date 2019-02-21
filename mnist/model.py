@@ -8,34 +8,44 @@ import tensorflow as tf
 from .config import MnistConfig
 
 
-def feature_extractor(
-        images: tf.keras.Input,
-        config: Optional[MnistConfig] = MnistConfig()
-) -> tf.Tensor:
-    """Define feature extractor."""
-    hidden = tf.keras.layers.Conv2D(
-        filters=32,
-        kernel_size=3,
-        activation='relu',
-    )(images)
-    hidden = tf.keras.layers.Conv2D(
-        filters=64,
-        kernel_size=3,
-        activation='relu',
-    )(hidden)
-    hidden = tf.keras.layers.MaxPool2D()(hidden)
-    hidden = tf.keras.layers.Dropout(config.dropout1_rate)(hidden)
-    return hidden
+class MnistFeatures(tf.keras.Model):
+    """Convolutional stack for MNIST classifier"""
+    def __init__(self, config: Optional[MnistConfig] = MnistConfig()):
+        super().__init__()
+        # Layers
+        self.conv1 = tf.keras.layers.Conv2D(32, 3, activation='relu')
+        self.conv2 = tf.keras.layers.Conv2D(64, 3, activation='relu')
+        self.pool = tf.keras.layers.MaxPool2D()
+        self.dropout = tf.keras.layers.Dropout(config.dropout1_rate)
+        # Build model
+        self.call(tf.keras.Input((None, None, config.n_channels)))
+
+    def call(self, images: tf.keras.Input) -> tf.Tensor:
+        x = self.conv1(images)
+        x = self.conv2(x)
+        x = self.pool(x)
+        return self.dropout(x)
 
 
-def classifier(
-        images: tf.keras.Input,
-        config: Optional[MnistConfig] = MnistConfig()
-) -> tf.keras.Model:
-    """Define classifier."""
-    hidden = feature_extractor(images)
-    hidden = tf.keras.layers.Flatten()(hidden)
-    hidden = tf.keras.layers.Dense(128, activation='relu')(hidden)
-    hidden = tf.keras.layers.Dropout(config.dropout2_rate)(hidden)
-    predictions = tf.keras.layers.Dense(config.n_classes, activation='softmax')(hidden)
-    return tf.keras.Model(inputs=images, outputs=predictions)
+class MnistClassifier(tf.keras.Model):
+    """MNIST digit classifier"""
+    def __init__(self, config: Optional[MnistConfig] = MnistConfig()):
+        super().__init__()
+        # Layers
+        self.features = MnistFeatures(config)
+        self.flatten = tf.keras.layers.Flatten()
+        self.dense1 = tf.keras.layers.Dense(128, activation='relu')
+        self.dropout = tf.keras.layers.Dropout(config.dropout2_rate)
+        self.dense2 = tf.keras.layers.Dense(
+            config.n_classes,
+            activation='softmax'
+        )
+        # Build model
+        self.call(tf.keras.Input(config.image_shape))
+
+    def call(self, images: tf.keras.Input) -> tf.Tensor:
+        x = self.features(images)
+        x = self.flatten(x)
+        x = self.dense1(x)
+        x = self.dropout(x)
+        return self.dense2(x)

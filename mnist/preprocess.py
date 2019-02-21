@@ -2,13 +2,12 @@ from typing import Tuple, Optional
 
 import tensorflow as tf
 
-from .config import MnistConfig
+
+def preprocess_images(images: tf.Tensor) -> tf.Tensor:
+    """Map image values to [0, 1]."""
+    return images / 255
 
 
-def preprocess(
-        images: tf.Tensor, label: tf.Tensor,
-        config: Optional[MnistConfig] = MnistConfig()
-) -> Tuple[tf.keras.Input, tf.Tensor]:
-    """Preprocess images and labels."""
-    images = tf.to_float(images) / 255
-    return tf.keras.Input(tensor=images), tf.one_hot(label, config.n_classes)
+def preprocess_labels(labels: tf.Tensor, n_classes: int) -> tf.Tensor:
+    """Generate one-hot encoding for class labels."""
+    return tf.one_hot(labels, n_classes)

@@ -10,6 +10,7 @@ from dataclasses import dataclass
 @dataclass
 class MnistConfig:
     # Model
+    version: str = '0.0.1'
     n_classes: int = 10
     dropout1_rate: float = 0.25
     dropout2_rate: float = 0.5
@@ -31,7 +32,7 @@ class MnistConfig:
     n_train_samples: int = 60000
     n_test_samples: int = 10000
 
-    # Helpers
+    # Derived values
     @property
     def image_shape(self) -> Tuple[int, int, int]:
         return (
@@ -48,6 +49,7 @@ class MnistConfig:
     def validation_steps(self) -> int:
         return self.n_test_samples // self.batch_size
 
+    # Initialization
     @classmethod
     def from_yaml(cls: 'MnistConfig', path: str) -> 'MnistConfig':
         with open(path) as configfile:

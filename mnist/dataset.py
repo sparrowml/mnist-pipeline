@@ -12,12 +12,13 @@ import numpy as np
 import tensorflow as tf
 
 from .config import MnistConfig
-from .preprocess import preprocess
+from .preprocess import preprocess_images, preprocess_labels
 
 
 def _int64_feature(value: int) -> tf.train.Feature:
     """int64 feature wrapper"""
     return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
+
 
 def _bytes_feature(value: bytes) -> tf.train.Feature:
     """bytes feature wrapper"""
@@ -36,7 +37,9 @@ def _parse_example(example: tf.train.Example) -> Tuple[tf.Tensor, tf.Tensor]:
     return image, label
 
 
-def _write_holdout(images: np.ndarray, labels: np.ndarray, file_path: str) -> None:
+def _write_holdout(
+        images: np.ndarray, labels: np.ndarray, file_path: str
+) -> None:
     """Write a single TFRecord file for either train or test."""
     with tf.python_io.TFRecordWriter(file_path) as writer:
         for x, y in zip(images, labels):
@@ -57,7 +60,9 @@ def build_dataset(train_path: str, test_path: str) -> None:
     _write_holdout(x_test, y_test, test_path)
 
 
-def load_dataset(file_path: str, config: Optional[MnistConfig] = MnistConfig()) -> Tuple[tf.Tensor, tf.Tensor]:
+def load_dataset(
+        file_path: str, config: Optional[MnistConfig] = MnistConfig()
+) -> Tuple[tf.Tensor, tf.Tensor]:
     """Create a dataset generator from a TFRecord path."""
     dataset = tf.data.TFRecordDataset(file_path)
     dataset = dataset.map(
@@ -70,4 +75,7 @@ def load_dataset(file_path: str, config: Optional[MnistConfig] = MnistConfig()) 
     iterator = dataset.make_one_shot_iterator()
     images, labels = iterator.get_next()
     images = tf.reshape(images, [-1, *config.image_shape])
-    return images, labels
+    return (
+        preprocess_images(images),
+        preprocess_labels(labels, config.n_classes),
+    )

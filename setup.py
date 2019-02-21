@@ -1,8 +1,10 @@
 from setuptools import setup
 
+from mnist.config import MnistConfig
+
 setup(
     name='mnist',
-    version='0.0.1',
+    version=MnistConfig.version,
     packages=['mnist'],
     license='MIT',
 )
