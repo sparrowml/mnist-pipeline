@@ -12,8 +12,6 @@ setup(
     license='MIT',
     install_requires=[
         'dataclasses',
-        'fire',
-        'numpy',
         'pyyaml',
     ],
     extras_require={

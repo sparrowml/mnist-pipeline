@@ -7,16 +7,23 @@ stages:
 
 before_script:
   - pip install .[cpu]
+  - pip install fire
 
 build_dataset:
   stage: data
   script: make build-dataset
   when: on_success
+  artifacts:
+    paths:
+      - data/
 
 train_model:
   stage: train
   script: make train-model
   when: on_success
+  artifacts:
+    paths:
+      - data/
 
 save_feature_extractor:
   stage: deploy
