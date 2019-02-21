@@ -3,8 +3,8 @@ build-dataset:
 		--train_path data/train.tfrecord \
 		--test_path data/test.tfrecord
 
-train:
-	python main.py train \
+train-model:
+	python main.py train_model \
 		--train_path data/train.tfrecord \
 		--test_path data/test.tfrecord \
 		--save_path data/mnist.h5 \
