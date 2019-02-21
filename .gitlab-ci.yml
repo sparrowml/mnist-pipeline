@@ -6,8 +6,7 @@ stages:
   - deploy
 
 before_script:
-  - pip install tensorflow pyyaml
-  - pip install -e .
+  - pip install .[cpu]
 
 build_dataset:
   stage: data

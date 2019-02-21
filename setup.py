@@ -7,4 +7,12 @@ setup(
     version=MnistConfig.version,
     packages=['mnist'],
     license='MIT',
+    install_requires=[
+        'dataclasses',
+        'pyyaml',
+    ],
+    extras_require={
+        'cpu': ['tensorflow'],
+        'gpu': ['tensorflow-gpu'],
+    },
 )
