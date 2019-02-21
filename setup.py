@@ -1,10 +1,13 @@
+import os
 from setuptools import setup
 
-from mnist.config import MnistConfig
+directory = os.path.dirname(__file__)
+with open(os.path.join(directory, 'mnist', '__version__')) as version_file:
+    version = version_file.read().strip()
 
 setup(
     name='mnist',
-    version=MnistConfig.version,
+    version=version,
     packages=['mnist'],
     license='MIT',
     install_requires=[

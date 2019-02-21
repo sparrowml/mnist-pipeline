@@ -1,6 +1,7 @@
 """
 Config with sensible defaults
 """
+import os
 from typing import Tuple
 
 import yaml
@@ -10,7 +11,6 @@ from dataclasses import dataclass
 @dataclass
 class MnistConfig:
     # Model
-    version: str = '0.0.1'
     n_classes: int = 10
     dropout1_rate: float = 0.25
     dropout2_rate: float = 0.5
@@ -48,6 +48,12 @@ class MnistConfig:
     @property
     def validation_steps(self) -> int:
         return self.n_test_samples // self.batch_size
+
+    @property
+    def version(self):
+        directory = os.path.dirname(__file__)
+        with open(os.path.join(directory, '__version__')) as version_file:
+            return version_file.read().strip()
 
     # Initialization
     @classmethod
