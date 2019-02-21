@@ -1,31 +1,48 @@
 image: python:3.6
 
-stages:
-  - data
-  - train
-  - deploy
+variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
 
 before_script:
   - pip install .[cpu]
   - pip install fire
+
+stages:
+  - data
+  - train
+  - deploy
 
 build_dataset:
   stage: data
   script: make build-dataset
   when: on_success
   artifacts:
+    when: on_success
+    expire_in: 1 day
     paths:
-      - data/
+      - data/train.tfrecord
+      - data/test.tfrecord
 
 train_model:
   stage: train
   script: make train-model
   when: on_success
   artifacts:
+    when: on_success
+    expire_in: 1 day
     paths:
-      - data/
+      - data/mnist.h5
 
 save_feature_extractor:
   stage: deploy
   script: make save-feature-extractor
   when: on_success
+  artifacts:
+    when: on_success
+    expire_in: 1 day
+    paths:
+      - data/mnist-feature-extractor-*.h5
