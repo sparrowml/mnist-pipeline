@@ -3,9 +3,14 @@ Config with sensible defaults
 """
 import os
 from typing import Tuple
+from pathlib import Path
 
 import yaml
 from dataclasses import dataclass
+
+from .__version__ import __version__
+
+HOME = Path.home()
 
 
 @dataclass
@@ -32,6 +37,22 @@ class MnistConfig:
     n_train_samples: int = 60000
     n_test_samples: int = 10000
 
+    # Settings
+    artifact_directory: str = str(HOME/'.pipes/mnist')
+    train_dataset_filename: str = 'train.tfrecord'
+    test_dataset_filename: str = 'test.tfrecord'
+    model_weights_filename: str = f'mnist-classifier-{__version__}.h5'
+    feature_weights_filename: str = f'mnist-features-{__version__}.h5'
+
+    @classmethod
+    def from_yaml(cls: 'MnistConfig', path: str) -> 'MnistConfig':
+        with open(path) as configfile:
+            configdict = yaml.load(configfile)
+        kwargs = {}
+        for key, value in configdict.items():
+            kwargs[key] = os.environ.get(key.upper()) or value
+        return MnistConfig(**kwargs)
+
     # Derived values
     @property
     def image_shape(self) -> Tuple[int, int, int]:
@@ -50,14 +71,23 @@ class MnistConfig:
         return self.n_test_samples // self.batch_size
 
     @property
-    def version(self):
-        directory = os.path.dirname(__file__)
-        with open(os.path.join(directory, '__version__')) as version_file:
-            return version_file.read().strip()
+    def artifact_directory_path(self):
+        path = Path(self.artifact_directory)
+        path.mkdir(parents=True, exist_ok=True)
+        return path
 
-    # Initialization
-    @classmethod
-    def from_yaml(cls: 'MnistConfig', path: str) -> 'MnistConfig':
-        with open(path) as configfile:
-            configdict = yaml.load(configfile)
-        return MnistConfig(**configdict)
+    @property
+    def train_dataset_path(self) -> Path:
+        return self.artifact_directory_path/self.train_dataset_filename
+
+    @property
+    def test_dataset_path(self) -> Path:
+        return self.artifact_directory_path/self.test_dataset_filename
+
+    @property
+    def model_weights_path(self) -> Path:
+        return self.artifact_directory_path/self.model_weights_filename
+
+    @property
+    def feature_weights_path(self) -> Path:
+        return self.artifact_directory_path/self.feature_weights_filename
