@@ -1,6 +1,3 @@
-"""
-Define the structure of the model.
-"""
 from typing import Union
 import tensorflow as tf
 

@@ -1,6 +1,3 @@
-"""
-Config with sensible defaults
-"""
 import os
 from typing import Tuple
 from pathlib import Path

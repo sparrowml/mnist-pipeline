@@ -1,5 +1,6 @@
 """
-Compile a TFRecord dataset for training. Each example has the following form:
+Functionality for dealing with the TFRecord dataset. Each record has the
+following format:
 
 {
     "image": <raw image bytes>,
