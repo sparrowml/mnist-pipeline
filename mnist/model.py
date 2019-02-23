@@ -5,6 +5,7 @@ from typing import Union
 import tensorflow as tf
 
 from .config import MnistConfig
+from .files import Files
 
 
 class MnistFeatures(tf.keras.Model):
@@ -13,6 +14,7 @@ class MnistFeatures(tf.keras.Model):
         super().__init__()
         if isinstance(config, str):
             config = MnistConfig.from_yaml(config)
+        self._config = config
         # Layers
         self.conv1 = tf.keras.layers.Conv2D(32, 3, activation='relu')
         self.conv2 = tf.keras.layers.Conv2D(64, 3, activation='relu')
@@ -20,6 +22,10 @@ class MnistFeatures(tf.keras.Model):
         self.dropout = tf.keras.layers.Dropout(config.dropout1_rate)
         # Build model
         self.call(tf.keras.Input((None, None, config.n_channels)))
+
+    def load_pretrained_weights(self):
+        weights_path = Files(self._config).download_feature_weights()
+        self.load_weights(weights_path)
 
     def call(self, images: tf.keras.Input) -> tf.Tensor:
         x = self.conv1(images)
@@ -34,6 +40,7 @@ class MnistClassifier(tf.keras.Model):
         super().__init__()
         if isinstance(config, str):
             config = MnistConfig.from_yaml(config)
+        self._config = config
         # Layers
         self.features = MnistFeatures(config)
         self.flatten = tf.keras.layers.Flatten()
@@ -45,6 +52,10 @@ class MnistClassifier(tf.keras.Model):
         )
         # Build model
         self.call(tf.keras.Input(config.image_shape))
+
+    def load_pretrained_weights(self):
+        weights_path = Files(self._config).download_model_weights()
+        self.load_weights(weights_path)
 
     def call(self, images: tf.keras.Input) -> tf.Tensor:
         x = self.features(images)
