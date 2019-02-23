@@ -1,8 +1,7 @@
 """
 Define the structure of the model.
 """
-from typing import Tuple, Union, Optional
-
+from typing import Union
 import tensorflow as tf
 
 from .config import MnistConfig
@@ -10,8 +9,10 @@ from .config import MnistConfig
 
 class MnistFeatures(tf.keras.Model):
     """Convolutional stack for MNIST classifier"""
-    def __init__(self, config: Optional[MnistConfig] = MnistConfig()):
+    def __init__(self, config: Union[str, MnistConfig]=MnistConfig()):
         super().__init__()
+        if isinstance(config, str):
+            config = MnistConfig.from_yaml(config)
         # Layers
         self.conv1 = tf.keras.layers.Conv2D(32, 3, activation='relu')
         self.conv2 = tf.keras.layers.Conv2D(64, 3, activation='relu')
@@ -29,8 +30,10 @@ class MnistFeatures(tf.keras.Model):
 
 class MnistClassifier(tf.keras.Model):
     """MNIST digit classifier"""
-    def __init__(self, config: Optional[MnistConfig] = MnistConfig()):
+    def __init__(self, config: Union[str, MnistConfig]=MnistConfig()):
         super().__init__()
+        if isinstance(config, str):
+            config = MnistConfig.from_yaml(config)
         # Layers
         self.features = MnistFeatures(config)
         self.flatten = tf.keras.layers.Flatten()

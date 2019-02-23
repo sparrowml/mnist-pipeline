@@ -2,23 +2,24 @@
 Given a compiled dataset and a model, this module is responsible for training
 the model.
 """
-from typing import Optional
+from typing import Union
 
 import tensorflow as tf
 
 from .config import MnistConfig
+from .files import Files
 from .dataset import load_dataset
 from .model import MnistClassifier
 
 
-def train_model(
-        train_path: str, test_path: str, save_path: str, config_path: str
-) -> None:
-    """Train the model."""
-    config = MnistConfig.from_yaml(config_path)
-    x_train, y_train = load_dataset(train_path)
-    x_test, y_test = load_dataset(test_path)
-    model = MnistClassifier()
+def train_model(config: Union[str, MnistConfig]=MnistConfig()) -> None:
+    """Train the model and save classifier and feature weights."""
+    if isinstance(config, str):
+        config = MnistConfig.from_yaml(config)
+    files = Files(config)
+    x_train, y_train = load_dataset(files.train_dataset, config)
+    x_test, y_test = load_dataset(files.test_dataset, config)
+    model = MnistClassifier(config)
     model.compile(
         loss=tf.keras.losses.categorical_crossentropy,
         optimizer=tf.keras.optimizers.Adagrad(),
@@ -36,8 +37,6 @@ def train_model(
         verbose=config.verbose,
         steps=config.validation_steps,
     )
-    print(f'Test accuracy: {accuracy:0.3f}')
-    model.save_weights(
-        save_path,
-        overwrite=True,
-    )
+    model.save_weights(files.model_weights, overwrite=True)
+    model.features.save_weights(files.feature_weights, overwrite=True)
+    return f'Test accuracy: {accuracy}'

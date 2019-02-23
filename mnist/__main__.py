@@ -1,16 +1,14 @@
 import fire
 
-from .dataset import build_dataset
+from .dataset import save_datasets
 from .train import train_model
-from .deploy import save_feature_extractor
 
 
 def main():
     """Expose CLI functions."""
     fire.Fire({
-        'build-dataset': build_dataset,
+        'save-datasets': save_datasets,
         'train-model': train_model,
-        'save-feature-extractor': save_feature_extractor,
     })
 
 if __name__ == '__main__':

@@ -6,12 +6,13 @@ Compile a TFRecord dataset for training. Each example has the following form:
     "label": <class label>
 }
 """
-from typing import Tuple, Optional
+from typing import Tuple, Union
 
 import numpy as np
 import tensorflow as tf
 
 from .config import MnistConfig
+from .files import Files
 from .preprocess import preprocess_images, preprocess_labels
 
 
@@ -53,15 +54,16 @@ def _write_holdout(
             writer.write(example.SerializeToString())
 
 
-def build_dataset(train_path: str, test_path: str) -> None:
+def save_datasets(config: Union[str, MnistConfig]=MnistConfig()) -> None:
     """Write train and test TFRecord files."""
+    files = Files(config)
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-    _write_holdout(x_train, y_train, train_path)
-    _write_holdout(x_test, y_test, test_path)
+    _write_holdout(x_train, y_train, files.train_dataset)
+    _write_holdout(x_test, y_test, files.test_dataset)
 
 
 def load_dataset(
-        file_path: str, config: Optional[MnistConfig] = MnistConfig()
+    file_path: str, config: Union[str, MnistConfig]=MnistConfig()
 ) -> Tuple[tf.Tensor, tf.Tensor]:
     """Create a dataset generator from a TFRecord path."""
     dataset = tf.data.TFRecordDataset(file_path)

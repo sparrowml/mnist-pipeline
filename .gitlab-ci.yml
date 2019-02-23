@@ -6,43 +6,11 @@ variables:
 cache:
   paths:
     - .cache/pip
+    - .tox
 
-before_script:
-  - pip install .[cpu]
-  - pip install fire
+full_pipeline:
+  script:
+    - tox -- mnist save-datasets config.yml
+    - tox -- mnist train-model config.yml
+    - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipes-ai/mnist/ --acl public-read
 
-stages:
-  - data
-  - train
-  - deploy
-
-build_dataset:
-  stage: data
-  script: make build-dataset
-  when: on_success
-  artifacts:
-    when: on_success
-    expire_in: 1 day
-    paths:
-      - data/train.tfrecord
-      - data/test.tfrecord
-
-train_model:
-  stage: train
-  script: make train-model
-  when: on_success
-  artifacts:
-    when: on_success
-    expire_in: 1 day
-    paths:
-      - data/mnist.h5
-
-save_feature_extractor:
-  stage: deploy
-  script: make save-feature-extractor
-  when: on_success
-  artifacts:
-    when: on_success
-    expire_in: 1 day
-    paths:
-      - data/mnist-feature-extractor-*.h5
