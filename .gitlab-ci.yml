@@ -8,12 +8,14 @@ cache:
     - .cache/pip
     - .tox
 
-# before_script:
-#   - pip install tox
+before_script:
+  - pip install tox
 
 full_pipeline:
   script:
-    # - tox -- mnist save-datasets config.yml
-    # - tox -- mnist train-model config.yml
-    # - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipesai/mnist/ --acl public-read
-    - echo $AWS_DEFAULT_REGION
+    - tox -- mnist save-datasets config.yml
+    - tox -- mnist train-model config.yml
+    - tox -- aws configure aws_access_key_id $AWS_ACCESS_KEY_ID
+    - tox -- aws configure aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+    - tox -- aws configure default.region $AWS_DEFAULT_REGION
+    - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipesai/mnist/ --acl public-read
