@@ -35,7 +35,7 @@ class MnistConfig:
     n_train_samples: int = 60000
     n_test_samples: int = 10000
 
-    # Settings
+    # File settings
     artifact_directory: str = str(Path.home()/'.pipes/mnist')
     artifact_url_prefix: str = 'https://s3.amazonaws.com/pipesai/mnist/'
     train_dataset_filename: str = f'train-{__version__}.tfrecord'
