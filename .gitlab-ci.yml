@@ -13,7 +13,6 @@ before_script:
 
 full_pipeline:
   script:
-    - tox -- aws s3 ls s3://pipesai/
-    # - tox -- mnist save-datasets config.yml
-    # - tox -- mnist train-model config.yml
-    # - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipesai/mnist/ --acl public-read
+    - tox -- mnist save-datasets config.yml
+    - tox -- mnist train-model config.yml
+    - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipesai/mnist/ --acl public-read
