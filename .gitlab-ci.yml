@@ -15,3 +15,4 @@ full_pipeline:
     - tox -- mnist save-datasets config.yml
     - tox -- mnist train-model config.yml
     - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipesai/mnist/ --acl public-read
+  when: manual
