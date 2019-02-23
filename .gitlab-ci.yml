@@ -8,9 +8,11 @@ cache:
     - .cache/pip
     - .tox
 
+before_script:
+  - pip tox
+
 full_pipeline:
   script:
     - tox -- mnist save-datasets config.yml
     - tox -- mnist train-model config.yml
     - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipes-ai/mnist/ --acl public-read
-
