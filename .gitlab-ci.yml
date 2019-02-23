@@ -9,7 +9,7 @@ cache:
     - .tox
 
 before_script:
-  - pip tox
+  - pip install tox
 
 full_pipeline:
   script:
