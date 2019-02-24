@@ -10,6 +10,3 @@ def main():
         'save-datasets': save_datasets,
         'train-model': train_model,
     })
-
-if __name__ == '__main__':
-    main()
