@@ -15,6 +15,7 @@ before_script:
   - pip install tox
 
 run_pipeline:
+  stage: run_pipeline
   script:
     - tox -- mnist save-datasets config.yml
     - tox -- mnist train-model config.yml
@@ -25,6 +26,7 @@ run_pipeline:
       - ~/.pipes/mnist/*.h5
 
 deploy:
+  stage: deploy
   script:
     - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipesai/mnist/ --acl public-read --exclude "*" --include "*.h5"
   when: manual
