@@ -14,5 +14,5 @@ full_pipeline:
   script:
     - tox -- mnist save-datasets config.yml
     - tox -- mnist train-model config.yml
-    - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipesai/mnist/ --acl public-read
+    - tox -- aws s3 sync ~/.pipes/mnist/ s3://pipesai/mnist/ --acl public-read --exclude "*" --include "*.h5"
   when: manual

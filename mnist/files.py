@@ -26,17 +26,9 @@ class Files:
     def train_dataset(self) -> str:
         return str(self._directory/self._config.train_dataset_filename)
 
-    def download_train_dataset(self) -> str:
-        self._download_file(self._config.train_dataset_filename)
-        return self.train_dataset
-
     @property
     def test_dataset(self) -> str:
         return str(self._directory/self._config.test_dataset_filename)
-
-    def download_test_dataset(self) -> str:
-        self._download_file(self._config.test_dataset_filename)
-        return self.test_dataset
 
     @property
     def model_weights(self) -> str:

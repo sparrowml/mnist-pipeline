@@ -35,8 +35,8 @@ class MnistConfig:
     # File settings
     artifact_directory: str = str(Path.home()/'.pipes/mnist')
     artifact_url_prefix: str = 'https://s3.amazonaws.com/pipesai/mnist/'
-    train_dataset_filename: str = f'train-{__version__}.tfrecord'
-    test_dataset_filename: str = f'test-{__version__}.tfrecord'
+    train_dataset_filename: str = f'train.tfrecord'
+    test_dataset_filename: str = f'test.tfrecord'
     model_weights_filename: str = f'mnist-classifier-{__version__}.h5'
     feature_weights_filename: str = f'mnist-features-{__version__}.h5'
 
