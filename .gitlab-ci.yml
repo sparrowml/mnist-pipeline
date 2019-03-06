@@ -7,25 +7,12 @@ cache:
   paths:
     - .cache/pip
 
-stages:
-  - run_pipeline
-  - deploy
-
 before_script:
   - pip install tox
 
 run_pipeline:
-  stage: run_pipeline
   script:
     - tox -- mnist save-datasets config.yml
     - tox -- mnist train-model config.yml
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - /root/.mlpipes/mnist/
-
-deploy:
-  stage: deploy
-  script:
     - tox -- aws s3 sync ~/.mlpipes/mnist/ s3://mlpipes/mnist/ --acl public-read --exclude "*" --include "*.h5"
   when: manual
