@@ -16,13 +16,12 @@ class TestFiles(unittest.TestCase):
     """
     def test_constructor__creates_directory(self):
         identifier = str(uuid.uuid4())
-        config_file = Path(f'.{identifier}.yaml')
-        directory = Path(f'./.{identifier}')
-        with open(config_file, 'w') as outfile:
-            outfile.write(f'artifact_directory: {directory}')
-        _ = MockFiles(str(config_file))
+        directory = f'./.{identifier}'
+        env = {'ARTIFACT_DIRECTORY': directory}
+        with unittest.mock.patch.dict('os.environ', env):
+            _ = MockFiles()
+        directory = Path(directory)
         self.assertTrue(directory.exists())
-        os.remove(config_file)
         directory.rmdir()
 
     def test_train_dataset__exists(self):

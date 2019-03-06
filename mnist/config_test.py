@@ -21,3 +21,9 @@ class TestConfig(unittest.TestCase):
             n_channels=3
         )
         self.assertEqual(config.image_shape, (20, 20, 3))
+
+    def test_artifact_directory_path__uses_environment_variable(self):
+        env = {'ARTIFACT_DIRECTORY': 'foo'}
+        with unittest.mock.patch.dict('os.environ', env):
+            config = MnistConfig()
+            self.assertEqual(str(config.artifact_directory_path), 'foo')
