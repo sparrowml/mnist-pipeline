@@ -22,10 +22,10 @@ run_pipeline:
   artifacts:
     expire_in: 1 day
     paths:
-      - ~/.mlpipes/mnist/*.h5
+      - /root/.mlpipes/mnist/
 
 deploy:
   stage: deploy
   script:
-    - tox -- aws s3 sync ~/.mlpipes/mnist/ s3://pipesai/mnist/ --acl public-read --exclude "*" --include "*.h5"
+    - tox -- aws s3 sync ~/.mlpipes/mnist/ s3://mlpipes/mnist/ --acl public-read --exclude "*" --include "*.h5"
   when: manual
