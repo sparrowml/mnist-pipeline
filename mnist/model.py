@@ -2,7 +2,7 @@ from typing import Union
 import tensorflow as tf
 
 from .config import MnistConfig
-from .files import Files
+from .files import MnistFiles
 
 
 class MnistFeatures(tf.keras.Model):
@@ -21,8 +21,8 @@ class MnistFeatures(tf.keras.Model):
         self.call(tf.keras.Input((None, None, config.n_channels)))
 
     def load_pretrained_weights(self):
-        weights_path = Files(self._config).download_feature_weights()
-        self.load_weights(weights_path)
+        weights_path = MnistFiles(self._config).download_feature_weights()
+        self.load_weights(str(weights_path))
 
     def call(self, images: tf.keras.Input) -> tf.Tensor:
         x = self.conv1(images)
@@ -51,8 +51,8 @@ class MnistClassifier(tf.keras.Model):
         self.call(tf.keras.Input(config.image_shape))
 
     def load_pretrained_weights(self):
-        weights_path = Files(self._config).download_model_weights()
-        self.load_weights(weights_path)
+        weights_path = MnistFiles(self._config).download_model_weights()
+        self.load_weights(str(weights_path))
 
     def call(self, images: tf.keras.Input) -> tf.Tensor:
         x = self.features(images)

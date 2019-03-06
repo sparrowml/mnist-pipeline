@@ -5,8 +5,6 @@ from pathlib import Path
 import yaml
 from dataclasses import dataclass
 
-from .__version__ import __version__
-
 
 @dataclass
 class MnistConfig:
@@ -31,14 +29,7 @@ class MnistConfig:
     n_channels: int = 1
     n_train_samples: int = 60000
     n_test_samples: int = 10000
-
-    # File settings
-    artifact_directory: str = str(Path.home()/'.pipes/mnist')
-    artifact_url_prefix: str = 'https://s3.amazonaws.com/pipesai/mnist/'
-    train_dataset_filename: str = f'train.tfrecord'
-    test_dataset_filename: str = f'test.tfrecord'
-    model_weights_filename: str = f'mnist-classifier-{__version__}.h5'
-    feature_weights_filename: str = f'mnist-features-{__version__}.h5'
+    artifact_directory: Path = Path.home()/'.mlpipes/mnist'
 
     @classmethod
     def from_yaml(cls: 'MnistConfig', path: str) -> 'MnistConfig':
