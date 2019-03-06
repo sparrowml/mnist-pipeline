@@ -19,7 +19,6 @@ run_pipeline:
   script:
     - tox -- mnist save-datasets config.yml
     - tox -- mnist train-model config.yml
-  when: manual
   artifacts:
     expire_in: 1 day
     paths:
