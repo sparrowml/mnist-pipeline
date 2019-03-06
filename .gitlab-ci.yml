@@ -1,18 +1,35 @@
 image: python:3.6
 
 variables:
-    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+    PIP_CACHE_DIR: .cache/pip
+    ARTIFACT_DIRECTORY: .mlpipes
 
 cache:
   paths:
     - .cache/pip
+    - .tox
+
+stages:
+  - test
+  - pipeline
+  - deploy
 
 before_script:
   - pip install tox
 
-run_pipeline:
-  script:
-    - tox -- mnist save-datasets config.yml
-    - tox -- mnist train-model config.yml
-    - tox -- aws s3 sync ~/.mlpipes/mnist/ s3://mlpipes/mnist/ --acl public-read --exclude "*" --include "*.h5"
+test:
+  stage: test
+  script: make test
+
+pipeline:
+  stage: pipeline
+  script: make pipeline
+  when: manual
+  artifacts:
+    paths:
+      - $ARTIFACT_DIRECTORY
+
+deploy:
+  stage: deploy
+  script: make deploy
   when: manual
