@@ -31,5 +31,5 @@ pipeline:
 
 deploy:
   stage: deploy
-  script: make deploy
+  script: tox -e upload-weights $ARTIFACT_DIRECTORY
   when: manual
