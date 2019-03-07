@@ -29,10 +29,11 @@ class MnistConfig:
     n_channels: int = 1
     n_train_samples: int = 60000
     n_test_samples: int = 10000
-    artifact_directory: Path = Path.home()/'.mlpipes/mnist'
+    artifact_directory: str = str(Path.home()/'.mlpipes/mnist')
 
     @classmethod
     def from_yaml(cls: 'MnistConfig', path: str) -> 'MnistConfig':
+        """Load overrides from a YAML config file."""
         with open(path) as configfile:
             configdict = yaml.load(configfile)
         return MnistConfig(**configdict)
@@ -53,3 +54,9 @@ class MnistConfig:
     @property
     def validation_steps(self) -> int:
         return self.n_test_samples // self.batch_size
+
+    @property
+    def artifact_directory_path(self) -> Path:
+        path_string = os.environ.get(
+            'ARTIFACT_DIRECTORY', self.artifact_directory)
+        return Path(path_string)

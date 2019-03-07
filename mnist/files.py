@@ -19,7 +19,7 @@ class MnistFiles:
     def __init__(self, config: Union[str, MnistConfig]=MnistConfig()):
         if isinstance(config, str):
             config = MnistConfig.from_yaml(config)
-        self._directory = config.artifact_directory
+        self._directory = config.artifact_directory_path
         self._directory.mkdir(parents=True, exist_ok=True)
 
     def _download_file(self, filename: str) -> None:
