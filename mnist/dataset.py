@@ -62,8 +62,16 @@ def save_datasets(config: Union[str, MnistConfig]=MnistConfig()) -> None:
         config = MnistConfig.from_yaml(config)
     files = MnistFiles(config)
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-    _write_holdout(x_train, y_train, files.train_dataset)
-    _write_holdout(x_test, y_test, files.test_dataset)
+    _write_holdout(
+        x_train[:config.n_train_samples],
+        y_train[:config.n_train_samples],
+        files.train_dataset,
+    )
+    _write_holdout(
+        x_test[:config.n_test_samples],
+        y_test[:config.n_test_samples],
+        files.test_dataset,
+    )
 
 
 def load_dataset(
