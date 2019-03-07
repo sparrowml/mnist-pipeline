@@ -40,4 +40,4 @@ There are two commands in the pipeline:
 1. `save-datasets`
 2. `train-model`
 
-Each command can be run with with `mnist` CLI, e.g. `mnist save-datasets`. Optionally, they can also both take the path to a YAML config file with overrides. The values in these files override the defaults set in (mnist/config.py)[./mnist/config.py]. So for example, to run the pipeline with a batch size of 64 for 2 epochs, you can call `mnist train-model config/pipeline.yml`.
+Each command can be run with with `mnist` CLI, e.g. `mnist save-datasets`. Optionally, they can also both take the path to a YAML config file with overrides. The values in these files override the defaults set in [mnist/config.py](./mnist/config.py). So for example, to run the pipeline with a batch size of 64 for 2 epochs, you can call `mnist train-model config/pipeline.yml`.
