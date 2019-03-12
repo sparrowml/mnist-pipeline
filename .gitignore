@@ -1,6 +1,6 @@
 .vscode
 
-mnist.egg-info
+mnist_pipeline.egg-info
 __pycache__
 .tox
 .coverage
