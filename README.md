@@ -9,7 +9,7 @@ Raw MNIST Data -> TFRecord Datasets -> Digit Classifier -> Classifier Weights
 ## Installation
 
 ``` shell
-pip install git+https://github.com/mlpipes/mnist-pipeline.git@0.1.0#egg=mnist[cpu]  
+pip install mnist-pipeline[cpu]
 ```
 ...or swap in `[gpu]` at the end to use the `tensorflow-gpu` package.
 
