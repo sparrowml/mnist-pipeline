@@ -32,11 +32,11 @@ class MnistConfig:
     artifact_directory: str = str(Path.home()/'.mlpipes/mnist')
 
     @classmethod
-    def from_yaml(cls: 'MnistConfig', path: str) -> 'MnistConfig':
+    def from_yaml(cls, path: str):
         """Load overrides from a YAML config file."""
         with open(path) as configfile:
             configdict = yaml.load(configfile)
-        return MnistConfig(**configdict)
+        return cls(**configdict)
 
     # Derived values
     @property
