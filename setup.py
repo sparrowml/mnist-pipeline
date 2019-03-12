@@ -7,7 +7,7 @@ with open(os.path.join(directory, 'mnist', '__version__.py')) as version:
     exec(version.read(), about)
 
 setup(
-    name='mnist',
+    name='mnist-pipeline',
     version=about['__version__'],
     packages=['mnist'],
     license='MIT',
