@@ -1,4 +1,5 @@
 # Only run one iteration
+artifact_directory: ./.test
 n_train_samples: 64
 n_test_samples: 64
 batch_size: 64

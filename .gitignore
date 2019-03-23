@@ -1,5 +1,5 @@
 .vscode
-
+.test
 mnist_pipeline.egg-info
 __pycache__
 .tox
