@@ -29,25 +29,25 @@ class MnistFiles:
             request.urlretrieve(url, path)
 
     @property
-    def train_dataset(self) -> Path:
-        return self._directory/self._train_dataset_filename
+    def train_dataset(self) -> str:
+        return str(self._directory/self._train_dataset_filename)
 
     @property
-    def test_dataset(self) -> Path:
-        return self._directory/self._test_dataset_filename
+    def test_dataset(self) -> str:
+        return str(self._directory/self._test_dataset_filename)
 
     @property
-    def model_weights(self) -> Path:
-        return self._directory/self._model_weights_filename
+    def model_weights(self) -> str:
+        return str(self._directory/self._model_weights_filename)
 
-    def download_model_weights(self) -> Path:
+    def download_model_weights(self) -> str:
         self._download_file(self._model_weights_filename)
         return self.model_weights
 
     @property
-    def feature_weights(self) -> Path:
-        return self._directory/self._feature_weights_filename
+    def feature_weights(self) -> str:
+        return str(self._directory/self._feature_weights_filename)
 
-    def download_feature_weights(self) -> Path:
+    def download_feature_weights(self) -> str:
         self._download_file(self._feature_weights_filename)
         return self.feature_weights

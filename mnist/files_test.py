@@ -1,4 +1,3 @@
-import os
 import uuid
 import unittest
 from pathlib import Path
@@ -26,15 +25,15 @@ class TestFiles(unittest.TestCase):
 
     def test_train_dataset__exists(self):
         files = MockFiles()
-        self.assertTrue(files.train_dataset.exists())
+        self.assertTrue(Path(files.train_dataset).exists())
 
     def test_test_dataset__exists(self):
         files = MockFiles()
-        self.assertTrue(files.test_dataset.exists())
+        self.assertTrue(Path(files.test_dataset).exists())
 
     def test_model_weights__exists(self):
         files = MockFiles()
-        self.assertTrue(files.model_weights.exists())
+        self.assertTrue(Path(files.model_weights).exists())
 
     def test_download_model_weights__skips_download(self):
         # We should short circuit the download since the file exists
@@ -43,7 +42,7 @@ class TestFiles(unittest.TestCase):
 
     def test_feature_weights__exists(self):
         files = MockFiles()
-        self.assertTrue(files.feature_weights.exists())
+        self.assertTrue(Path(files.feature_weights).exists())
 
     def test_download_feature_weights__skips_download(self):
         # We should short circuit the download since the file exists
