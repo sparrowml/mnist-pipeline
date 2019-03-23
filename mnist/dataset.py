@@ -41,10 +41,10 @@ def _parse_example(example: tf.train.Example) -> Tuple[tf.Tensor, tf.Tensor]:
 
 
 def _write_holdout(
-        images: np.ndarray, labels: np.ndarray, file_path: Path
+        images: np.ndarray, labels: np.ndarray, file_path: str
 ) -> None:
     """Write a single TFRecord file for either train or test."""
-    with tf.python_io.TFRecordWriter(str(file_path)) as writer:
+    with tf.python_io.TFRecordWriter(file_path) as writer:
         for x, y in zip(images, labels):
             feature = dict(
                 image=_bytes_feature(x.tostring()),
@@ -80,7 +80,7 @@ def load_dataset(
     """Create a dataset generator from a TFRecord path."""
     if isinstance(config, str):
         config = MnistConfig.from_yaml(config)
-    dataset = tf.data.TFRecordDataset(str(file_path))
+    dataset = tf.data.TFRecordDataset(file_path)
     dataset = dataset.map(
         _parse_example,
         num_parallel_calls=config.n_dataset_threads,

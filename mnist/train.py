@@ -32,7 +32,7 @@ def train_model(config: Union[str, MnistConfig] = MnistConfig()) -> None:
         verbose=config.verbose,
         steps=config.validation_steps,
     )
-    model.save_weights(str(files.model_weights), overwrite=True)
+    model.save_weights(files.model_weights, overwrite=True)
     model.get_layer('mnist-features').save_weights(
-        str(files.feature_weights), overwrite=True)
+        files.feature_weights, overwrite=True)
     return f'Test accuracy: {accuracy}'
