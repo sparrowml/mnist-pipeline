@@ -19,7 +19,7 @@ Use the `load_pretrained_weights()` method to get a pretrained classifier. Then 
 
 ``` python
 import numpy as np
-from mnist import MnistClassifier
+from mnist import mnist_classifier
 
 x = np.random.randint(
     0, 256,
@@ -27,8 +27,7 @@ x = np.random.randint(
     dtype=np.uint8
 ) / 255
 
-model = MnistClassifier()
-model.load_pretrained_weights()
+model = mnist_classifier(pretrained=True)
 
 y = model.predict(x).argmax()
 ```
