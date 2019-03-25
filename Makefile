@@ -1,3 +1,4 @@
+test: export ARTIFACT_DIRECTORY=./.test
 test:
 	# Run the pipeline on a single batch and tests
 	@tox -e save-datasets ./config/test.yml
