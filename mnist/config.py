@@ -35,7 +35,7 @@ class MnistConfig:
     def from_yaml(cls, path: str):
         """Load overrides from a YAML config file."""
         with open(path) as configfile:
-            configdict = yaml.load(configfile)
+            configdict = yaml.safe_load(configfile)
         return cls(**configdict)
 
     # Derived values
