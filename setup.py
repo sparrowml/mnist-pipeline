@@ -14,6 +14,7 @@ setup(
     install_requires=[
         'dataclasses',
         'fire',
+        'imageio',
         'pyyaml',
     ],
     extras_require={

@@ -3,14 +3,15 @@ Functionality for dealing with the TFRecord dataset. Each record has the
 following format:
 
 {
-    "image": <raw image bytes>,
+    "image": <raw jpeg bytes>,
     "label": <class label>
 }
 """
+import io
 from pathlib import Path
-from typing import Tuple, Union
+from typing import Tuple, Union, List, Dict
 
-import numpy as np
+import imageio
 import tensorflow as tf
 
 from .config import MnistConfig
@@ -35,20 +36,22 @@ def _parse_example(example: tf.train.Example) -> Tuple[tf.Tensor, tf.Tensor]:
         label=tf.FixedLenFeature([], tf.int64),
     )
     parsed = tf.parse_single_example(example, features)
-    image = tf.decode_raw(parsed['image'], tf.uint8)
+    image = tf.image.decode_jpeg(parsed['image'])
     label = parsed['label']
     return image, label
 
 
-def _write_holdout(
-        images: np.ndarray, labels: np.ndarray, file_path: str
-) -> None:
+def write_holdout(samples: List[Dict], file_path: str) -> None:
     """Write a single TFRecord file for either train or test."""
     with tf.python_io.TFRecordWriter(file_path) as writer:
-        for x, y in zip(images, labels):
+        for sample in samples:
+            buffer = io.BytesIO()
+            img = sample['img']
+            imageio.imwrite(buffer, img, format='jpg')
+            buffer.seek(0)
             feature = dict(
-                image=_bytes_feature(x.tostring()),
-                label=_int64_feature(int(y)),
+                image=_bytes_feature(buffer.read()),
+                label=_int64_feature(int(sample['label'])),
             )
             example = tf.train.Example(
                 features=tf.train.Features(feature=feature),
@@ -61,25 +64,19 @@ def save_datasets(config: Union[str, MnistConfig]=MnistConfig()) -> None:
     if isinstance(config, str):
         config = MnistConfig.from_yaml(config)
     files = MnistFiles(config)
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
-    _write_holdout(
-        x_train[:config.n_train_samples],
-        y_train[:config.n_train_samples],
-        files.train_dataset,
-    )
-    _write_holdout(
-        x_test[:config.n_test_samples],
-        y_test[:config.n_test_samples],
-        files.test_dataset,
-    )
+    train_arrays, test_arrays = tf.keras.datasets.mnist.load_data()
+    train_samples = [
+        dict(img=img, label=int(label)) for img, label in zip(*train_arrays)]
+    test_samples = [
+        dict(img=img, label=int(label)) for img, label in zip(*test_arrays)]
+    write_holdout(train_samples[:config.n_train_samples], files.train_dataset)
+    write_holdout(test_samples[:config.n_test_samples], files.test_dataset)
 
 
 def load_dataset(
-    file_path: Path, config: Union[str, MnistConfig]=MnistConfig()
+        file_path: Path, config: MnistConfig
 ) -> Tuple[tf.Tensor, tf.Tensor]:
     """Create a dataset generator from a TFRecord path."""
-    if isinstance(config, str):
-        config = MnistConfig.from_yaml(config)
     dataset = tf.data.TFRecordDataset(file_path)
     dataset = dataset.map(
         _parse_example,
