@@ -6,8 +6,7 @@ from .files import MnistFiles
 
 
 def mnist_features(
-        config: Union[str, MnistConfig] = MnistConfig(),
-        pretrained: bool = False
+        config: Union[str, MnistConfig] = MnistConfig()
 ) -> tf.keras.Model:
     if isinstance(config, str):
         config = MnistConfig.from_yaml(config)
@@ -21,15 +20,14 @@ def mnist_features(
         outputs=outputs,
         name='mnist-features',
     )
-    if pretrained:
+    if config.pretrained_features:
         files = MnistFiles(config)
         features.load_weights(files.download_feature_weights())
     return features
 
 
 def mnist_classifier(
-        config: Union[str, MnistConfig] = MnistConfig(),
-        pretrained: bool = False
+        config: Union[str, MnistConfig] = MnistConfig()
 ) -> tf.keras.Model:
     if isinstance(config, str):
         config = MnistConfig.from_yaml(config)
@@ -43,7 +41,12 @@ def mnist_classifier(
         activation='softmax'
     )(x)
     classifier = tf.keras.Model(inputs=inputs, outputs=outputs)
-    if pretrained:
+    classifier.compile(
+        loss='categorical_crossentropy',
+        optimizer=tf.keras.optimizers.Adagrad(lr=config.learning_rate),
+        metrics=['accuracy'],
+    )
+    if config.pretrained_classifier:
         files = MnistFiles(config)
         classifier.load_weights(files.download_model_weights())
     return classifier

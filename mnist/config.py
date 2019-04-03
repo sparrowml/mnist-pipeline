@@ -12,12 +12,15 @@ class MnistConfig:
     n_classes: int = 10
     dropout1_rate: float = 0.25
     dropout2_rate: float = 0.5
+    pretrained_classifier: bool = False
+    pretrained_features: bool = False
 
     # Train
     seed: int = 12345
     batch_size: int = 128
     n_epochs: int = 1
     verbose: bool = True
+    learning_rate: float = 0.01
 
     # Nuisance parameters
     n_dataset_threads: int = 4
