@@ -25,5 +25,12 @@ setup(
         'console_scripts': [
             'mnist = mnist.__main__:main',
         ]
-    }
+    },
+    setup_requires=[
+        'pytest-runner',
+    ],
+    tests_require=[
+        'pytest',
+        'pytest-cov',
+    ]
 )

@@ -2,12 +2,10 @@ image: python:3.6
 
 variables:
     PIP_CACHE_DIR: .cache/pip
-    ARTIFACT_DIRECTORY: .mlpipes
 
 cache:
   paths:
     - .cache/pip
-    - .tox
 
 stages:
   - test
@@ -15,21 +13,8 @@ stages:
   - deploy
 
 before_script:
-  - pip install tox
+  - pip install .[cpu]
 
 test:
   stage: test
   script: make test
-
-pipeline:
-  stage: pipeline
-  script: make pipeline
-  when: manual
-  artifacts:
-    paths:
-      - $ARTIFACT_DIRECTORY
-
-deploy:
-  stage: deploy
-  script: tox -e upload-weights $ARTIFACT_DIRECTORY
-  when: manual

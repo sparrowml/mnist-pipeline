@@ -12,7 +12,7 @@ class TestDataset(unittest.TestCase):
         config = MnistConfig()
         files = MnistFiles()
         sess = tf.InteractiveSession()
-        images_tensor, labels_tensor = load_dataset(files.train_dataset)
+        images_tensor, labels_tensor = load_dataset(files.train_dataset, config)
         images, labels = sess.run([images_tensor, labels_tensor])
         self.assertEqual(
             images.shape, (config.batch_size, *config.image_shape)
