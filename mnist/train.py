@@ -16,23 +16,15 @@ def train_model(config: Union[str, MnistConfig] = MnistConfig()) -> None:
     x_train, y_train = load_dataset(files.train_dataset, config)
     x_test, y_test = load_dataset(files.test_dataset, config)
     model = mnist_classifier(config)
-    model.compile(
-        loss=tf.keras.losses.categorical_crossentropy,
-        optimizer=tf.keras.optimizers.Adagrad(),
-        metrics=['accuracy'],
-    )
     model.fit(
         x_train, y_train,
+        validation_data=(x_test, y_test),
         verbose=config.verbose,
         epochs=config.n_epochs,
         steps_per_epoch=config.steps_per_epoch,
-    )
-    _, accuracy = model.evaluate(
-        x_test, y_test,
-        verbose=config.verbose,
-        steps=config.validation_steps,
+        validation_steps=config.validation_steps,
     )
     model.save_weights(files.model_weights, overwrite=True)
     model.get_layer('mnist-features').save_weights(
         files.feature_weights, overwrite=True)
-    return f'Test accuracy: {accuracy}'
+    return 'OK'
