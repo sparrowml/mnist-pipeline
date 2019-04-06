@@ -15,11 +15,11 @@ pip install mnist-pipeline[cpu]
 
 ## Inference quick start
 
-Use the `load_pretrained_weights()` method to get a pretrained classifier. Then pass in a batch of TensorFlow or numpy images with shape `(batch_size, 28, 28, 1)` to `predict()`. If the images are 8-bit integers, divide by 255 to map to floats in `[0, 1]`.
+Set `pretrained_classifier` to true in config to get a pretrained classifier. Then pass in a batch of TensorFlow or numpy images with shape `(batch_size, 28, 28, 1)` to `predict()`. If the images are 8-bit integers, divide by 255 to map to floats in `[0, 1]`.
 
 ``` python
 import numpy as np
-from mnist import mnist_classifier
+from mnist import mnist_classifier, MnistConfig
 
 x = np.random.randint(
     0, 256,
@@ -27,7 +27,7 @@ x = np.random.randint(
     dtype=np.uint8
 ) / 255
 
-model = mnist_classifier(pretrained=True)
+model = mnist_classifier(MnistConfig(pretrained_classifier=True))
 
 y = model.predict(x).argmax()
 ```
