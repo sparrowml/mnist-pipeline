@@ -1,5 +1,5 @@
 # MNIST Classifier Pipeline
-A toy AI pipeline that creates a digit classifier with features that can be exported.
+A toy ML pipeline that creates a digit classifier with features that can be exported.
 
 ```
 Raw MNIST Data -> TFRecord Datasets -> Digit Classifier -> Classifier Weights
