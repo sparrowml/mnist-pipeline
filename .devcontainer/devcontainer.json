@@ -14,5 +14,8 @@
   "extensions": [
     "ms-python.python",
     "ms-python.vscode-pylance"
+  ],
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached,readonly"
   ]
 }
