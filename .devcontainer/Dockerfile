@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.6
 
 RUN mkdir /code
 WORKDIR /code
@@ -6,4 +6,4 @@ WORKDIR /code
 ADD mnist mnist
 ADD setup.py setup.py
 
-RUN pip install -e .
+RUN pip install -e .[cpu]
