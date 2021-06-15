@@ -1,0 +1,20 @@
+schema: '2.0'
+stages:
+  save-datasets:
+    cmd: mnist save-datasets ./data
+    outs:
+    - path: data/MNIST/raw
+      md5: 8c257df187855c681f88bde92d721ccd.dir
+      size: 66544770
+      nfiles: 8
+  train-model:
+    cmd: mnist train-model ./data
+    deps:
+    - path: data/MNIST/raw
+      md5: 8c257df187855c681f88bde92d721ccd.dir
+      size: 66544770
+      nfiles: 8
+    outs:
+    - path: data/features.pt
+      md5: fd28801291473f2763827e2187aeb29c
+      size: 80459

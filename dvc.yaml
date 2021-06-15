@@ -1,0 +1,11 @@
+stages:
+  save-datasets:
+    cmd: mnist save-datasets ./data
+    outs:
+    - data/MNIST/raw
+  train-model:
+    cmd: mnist train-model ./data
+    deps:
+    - data/MNIST/raw
+    outs:
+    - data/features.pt
