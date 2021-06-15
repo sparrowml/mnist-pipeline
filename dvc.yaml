@@ -7,5 +7,6 @@ stages:
     cmd: mnist train-model ./data
     deps:
     - data/MNIST/raw
+    - mnist
     outs:
     - data/features.pt

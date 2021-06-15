@@ -8,9 +8,9 @@ class MnistFeatures(torch.nn.Module):
         """Initialize learned layers"""
         super().__init__()
         self.encoder = torch.nn.Sequential(
-            torch.nn.Conv2d(1, 32, 3),
+            torch.nn.Conv2d(1, 64, 3),
             torch.nn.ReLU(),
-            torch.nn.Conv2d(32, 64, 3),
+            torch.nn.Conv2d(64, 64, 3),
             torch.nn.ReLU(),
             torch.nn.MaxPool2d(2),
             torch.nn.BatchNorm2d(64),

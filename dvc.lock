@@ -14,7 +14,11 @@ stages:
       md5: 8c257df187855c681f88bde92d721ccd.dir
       size: 66544770
       nfiles: 8
+    - path: mnist
+      md5: c7adf9c447d152ae44ef40604fac2a12.dir
+      size: 15071
+      nfiles: 15
     outs:
     - path: data/features.pt
-      md5: fd28801291473f2763827e2187aeb29c
-      size: 80459
+      md5: 3f1a605323f88e598a435c45e514e97e
+      size: 155467
