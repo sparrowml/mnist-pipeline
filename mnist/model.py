@@ -1,52 +1,40 @@
-from typing import Union
-import tensorflow as tf
-
-from .config import MnistConfig
-from .files import MnistFiles
+import torch
 
 
-def mnist_features(
-        config: Union[str, MnistConfig] = MnistConfig()
-) -> tf.keras.Model:
-    if isinstance(config, str):
-        config = MnistConfig.from_yaml(config)
-    inputs = tf.keras.Input((None, None, config.n_channels))
-    x = tf.keras.layers.Conv2D(32, 3, activation='relu')(inputs)
-    x = tf.keras.layers.Conv2D(64, 3, activation='relu')(x)
-    x = tf.keras.layers.MaxPool2D()(x)
-    outputs = tf.keras.layers.BatchNormalization()(x)
-    features = tf.keras.Model(
-        inputs=inputs,
-        outputs=outputs,
-        name='mnist-features',
-    )
-    if config.pretrained_features:
-        files = MnistFiles(config)
-        features.load_weights(files.download_feature_weights())
-    return features
+class MnistFeatures(torch.nn.Module):
+    def __init__(self) -> None:
+        """Initialize learned layers"""
+        # TODO: load weights
+        super().__init__()
+        self.encoder = torch.nn.Sequential(
+            torch.nn.Conv2d(1, 32, 3),
+            torch.nn.ReLU(),
+            torch.nn.Conv2d(32, 64, 3),
+            torch.nn.ReLU(),
+            torch.nn.MaxPool2d(2),
+            torch.nn.BatchNorm2d(64),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass"""
+        return self.encoder(x)
 
 
-def mnist_classifier(
-        config: Union[str, MnistConfig] = MnistConfig()
-) -> tf.keras.Model:
-    if isinstance(config, str):
-        config = MnistConfig.from_yaml(config)
-    inputs = tf.keras.Input(config.image_shape)
-    x = mnist_features(config)(inputs)
-    x = tf.keras.layers.Flatten()(x)
-    x = tf.keras.layers.Dense(128, activation='relu')(x)
-    x = tf.keras.layers.BatchNormalization()(x)
-    outputs = tf.keras.layers.Dense(
-        config.n_classes,
-        activation='softmax'
-    )(x)
-    classifier = tf.keras.Model(inputs=inputs, outputs=outputs)
-    classifier.compile(
-        loss='categorical_crossentropy',
-        optimizer=tf.keras.optimizers.Adagrad(lr=config.learning_rate),
-        metrics=['accuracy'],
-    )
-    if config.pretrained_classifier:
-        files = MnistFiles(config)
-        classifier.load_weights(files.download_model_weights())
-    return classifier
+class MnistClassifier(torch.nn.Module):
+    def __init__(self, n_classes: int = 10) -> None:
+        """Initialize learned layers"""
+        super().__init__()
+        self.features = MnistFeatures()
+        self.linear = torch.nn.Linear(9216, 128)
+        self.batch_norm = torch.nn.BatchNorm1d(128)
+        self.classifier = torch.nn.Linear(128, n_classes)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass"""
+        x = self.features(x)
+        x = torch.reshape(x, (len(x), -1))
+        x = torch.relu(self.linear(x))
+        if len(x) > 1:
+            x = self.batch_norm(x)
+        x = self.classifier(x)
+        return x
