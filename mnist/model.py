@@ -1,10 +1,11 @@
+from typing import Optional
+
 import torch
 
 
 class MnistFeatures(torch.nn.Module):
-    def __init__(self) -> None:
+    def __init__(self, weights: Optional[str] = None) -> None:
         """Initialize learned layers"""
-        # TODO: load weights
         super().__init__()
         self.encoder = torch.nn.Sequential(
             torch.nn.Conv2d(1, 32, 3),
@@ -14,6 +15,8 @@ class MnistFeatures(torch.nn.Module):
             torch.nn.MaxPool2d(2),
             torch.nn.BatchNorm2d(64),
         )
+        if weights:
+            self.load_state_dict(torch.load(weights))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass"""

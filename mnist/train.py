@@ -1,3 +1,4 @@
+import os
 from typing import Tuple
 
 import pytorch_lightning as pl
@@ -40,7 +41,9 @@ class MnistLightning(pl.LightningModule):
 
 def train_model(data_dir: str) -> None:
     """Train the model and save classifier and feature weights."""
-    trainer = pl.Trainer(max_epochs=1)
+    trainer = pl.Trainer(logger=False, checkpoint_callback=False, max_epochs=1)
     train_loader = load_dataset(data_dir)
     dev_loader = load_dataset(data_dir, train=False)
-    trainer.fit(MnistLightning(), train_loader, dev_loader)
+    pl_model = MnistLightning()
+    trainer.fit(pl_model, train_loader, dev_loader)
+    torch.save(pl_model.model.features, os.path.join(data_dir, "features.pt"))
