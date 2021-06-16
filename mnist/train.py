@@ -1,3 +1,4 @@
+import json
 import os
 from typing import Tuple
 
@@ -47,3 +48,5 @@ def train_model(data_dir: str) -> None:
     pl_model = MnistLightning()
     trainer.fit(pl_model, train_loader, dev_loader)
     torch.save(pl_model.model.features, os.path.join(data_dir, "features.pt"))
+    with open(os.path.join(data_dir, "accuracy.json"), "w") as f:
+        f.write(json.dumps(trainer.validate(pl_model, dev_loader, ckpt_path=None)[0]))

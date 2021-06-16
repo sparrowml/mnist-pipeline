@@ -4,9 +4,12 @@ stages:
     outs:
     - data/MNIST/raw
   train-model:
-    cmd: mnist train-model ./data
+    cmd: mnist train-model data/
     deps:
     - data/MNIST/raw
     - mnist
     outs:
     - data/features.pt
+    metrics:
+    - data/accuracy.json:
+        cache: false

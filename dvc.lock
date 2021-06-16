@@ -8,17 +8,20 @@ stages:
       size: 66544770
       nfiles: 8
   train-model:
-    cmd: mnist train-model ./data
+    cmd: mnist train-model data/
     deps:
     - path: data/MNIST/raw
       md5: 8c257df187855c681f88bde92d721ccd.dir
       size: 66544770
       nfiles: 8
     - path: mnist
-      md5: c7adf9c447d152ae44ef40604fac2a12.dir
-      size: 15071
-      nfiles: 15
+      md5: 9ec8b35adb5efe486ebdfdbbc83b3e01.dir
+      size: 21562
+      nfiles: 17
     outs:
+    - path: data/accuracy.json
+      md5: d9dd5a5ec015169485a3588e2b8b9c9c
+      size: 36
     - path: data/features.pt
-      md5: 3f1a605323f88e598a435c45e514e97e
+      md5: 9ebbb8d3279dc93dc25796befcb27e5e
       size: 155467
