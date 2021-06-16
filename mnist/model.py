@@ -2,15 +2,17 @@ from typing import Optional
 
 import torch
 
+from . import constants
+
 
 class MnistFeatures(torch.nn.Module):
     def __init__(self, weights: Optional[str] = None) -> None:
         """Initialize learned layers"""
         super().__init__()
         self.encoder = torch.nn.Sequential(
-            torch.nn.Conv2d(1, 64, 3),
+            torch.nn.Conv2d(1, 32, 3),
             torch.nn.ReLU(),
-            torch.nn.Conv2d(64, 64, 3),
+            torch.nn.Conv2d(32, 64, 3),
             torch.nn.ReLU(),
             torch.nn.MaxPool2d(2),
             torch.nn.BatchNorm2d(64),
@@ -24,13 +26,13 @@ class MnistFeatures(torch.nn.Module):
 
 
 class MnistClassifier(torch.nn.Module):
-    def __init__(self, n_classes: int = 10) -> None:
+    def __init__(self) -> None:
         """Initialize learned layers"""
         super().__init__()
         self.features = MnistFeatures()
-        self.linear = torch.nn.Linear(9216, 128)
+        self.linear = torch.nn.Linear(constants.FEATURE_DIMENSIONS, 128)
         self.batch_norm = torch.nn.BatchNorm1d(128)
-        self.classifier = torch.nn.Linear(128, n_classes)
+        self.classifier = torch.nn.Linear(128, constants.NUM_CLASSES)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass"""

@@ -1,4 +1,0 @@
-# Config overrides
-# See mnist.config.MnistConfig for defaults
-batch_size: 64
-n_epochs: 2

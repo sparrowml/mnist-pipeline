@@ -1,27 +1,30 @@
 schema: '2.0'
 stages:
   save-datasets:
-    cmd: mnist save-datasets ./data
+    cmd: mnist save-datasets
     outs:
     - path: data/MNIST/raw
       md5: 8c257df187855c681f88bde92d721ccd.dir
       size: 66544770
       nfiles: 8
   train-model:
-    cmd: mnist train-model data/
+    cmd: mnist train-model
     deps:
     - path: data/MNIST/raw
       md5: 8c257df187855c681f88bde92d721ccd.dir
       size: 66544770
       nfiles: 8
     - path: mnist
-      md5: 9ec8b35adb5efe486ebdfdbbc83b3e01.dir
-      size: 21562
-      nfiles: 17
+      md5: 3004af0834735098e66349c8d7384022.dir
+      size: 21205
+      nfiles: 19
+    params:
+      params.yaml:
+        learning_rate: 0.01
     outs:
     - path: data/accuracy.json
-      md5: d9dd5a5ec015169485a3588e2b8b9c9c
-      size: 36
+      md5: 200585e690b39791a6a527c10aebcbac
+      size: 35
     - path: data/features.pt
-      md5: 9ebbb8d3279dc93dc25796befcb27e5e
-      size: 155467
+      md5: fad50c089c748bbaa4d75804d7134b5d
+      size: 80459
