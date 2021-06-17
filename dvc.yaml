@@ -15,3 +15,4 @@ stages:
         cache: false
     params:
     - learning_rate
+    - batch_size
