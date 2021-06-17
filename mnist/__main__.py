@@ -1,5 +1,4 @@
 import fire
-from omegaconf import OmegaConf
 
 from .dataset import save_datasets
 from .train import train_model
@@ -7,10 +6,13 @@ from .train import train_model
 
 def main():
     """Expose CLI functions."""
-    fire.Fire({
-        'save-datasets': save_datasets,
-        'train-model': train_model,
-    })
+    fire.Fire(
+        {
+            "save-datasets": save_datasets,
+            "train-model": train_model,
+        }
+    )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

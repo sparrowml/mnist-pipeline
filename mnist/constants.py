@@ -1,12 +1,7 @@
 import os
 
-# Dataset
-NUM_WORKERS: int = 2
-BATCH_SIZE: int = 128
-
 # Train
 RANDOM_SEED: int = 12345
-MAX_EPOCHS: int = 1
 
 # Model
 FEATURE_DIMENSIONS: int = 9216

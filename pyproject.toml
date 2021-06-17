@@ -20,6 +20,7 @@ omegaconf = "^2.1.0"
 [tool.poetry.dev-dependencies]
 ipykernel = "^5.5.5"
 dvc = "^2.3.0"
+black = "^21.6b0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

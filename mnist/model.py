@@ -2,7 +2,7 @@ from typing import Optional
 
 import torch
 
-from . import constants
+from .config import MnistConfig
 
 
 class MnistFeatures(torch.nn.Module):
@@ -30,9 +30,9 @@ class MnistClassifier(torch.nn.Module):
         """Initialize learned layers"""
         super().__init__()
         self.features = MnistFeatures()
-        self.linear = torch.nn.Linear(constants.FEATURE_DIMENSIONS, 128)
+        self.linear = torch.nn.Linear(MnistConfig.feature_dimensions, 128)
         self.batch_norm = torch.nn.BatchNorm1d(128)
-        self.classifier = torch.nn.Linear(128, constants.NUM_CLASSES)
+        self.classifier = torch.nn.Linear(128, MnistConfig.num_classes)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass"""
