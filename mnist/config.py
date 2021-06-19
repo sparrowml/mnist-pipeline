@@ -1,56 +1,44 @@
 import os
+from dataclasses import asdict, dataclass
 from typing import Any, Dict
 
 from omegaconf import OmegaConf
+from dotenv import load_dotenv
 
-from . import constants
-
-
-def _get_params() -> Dict[str, Any]:
-    if os.path.exists(constants.PARAMS_PATH):
-        return OmegaConf.load(constants.PARAMS_PATH)
-    return dict()
+load_dotenv()
+DATA_DIRECTORY = os.environ.get("DATA_DIRECTORY", "./data")
+CONFIG_PATH = os.environ.get("CONFIG_PATH", "./config.yaml")
+YAML_CONFIG = dict()
+if CONFIG_PATH and os.path.exists(CONFIG_PATH):
+    YAML_CONFIG = OmegaConf.load(CONFIG_PATH)
 
 
 def instancer(cls):
-    """Make __getattribute__ work at the class level"""
+    """Access class like an object instance"""
     return cls()
 
 
 @instancer
+@dataclass
 class MnistConfig:
-    _env_prefix = "MNIST_"
-    _params = _get_params()
-    _constants = constants
-
     # Dataset
-    num_workers: int
-    batch_size: int
+    num_workers: int = YAML_CONFIG.get("num_workers", 4)
+    batch_size: int = YAML_CONFIG.get("batch_size", 128)
 
     # Model
-    num_classes: int
-    feature_dimensions: int
+    num_classes: int = YAML_CONFIG.get("num_classes", 10)
+    feature_dimensions: int = YAML_CONFIG.get("feature_dimensions", 9216)
 
     # Train
-    random_seed: int
-    learning_rate: float
-    max_epochs: int
+    random_seed: int = YAML_CONFIG.get("random_seed", 12345)
+    learning_rate: float = YAML_CONFIG.get("learning_rate", 0.01)
+    max_epochs: int = YAML_CONFIG.get("max_epochs", 1)
 
     # Paths
-    data_directory: str
-    feature_weights_path: str
-    accuracy_metric_path: str
+    data_directory: str = DATA_DIRECTORY
+    feature_weights_path: str = YAML_CONFIG.get(
+        "feature_weights_path", os.path.join(DATA_DIRECTORY, "features.pt")
+    )
 
-    def __getattribute__(self, name: str) -> Any:
-        """Return config value from 1) environmen variables 2) YAML config 3) constants"""
-        if name.startswith("_"):
-            return super().__getattribute__(name)
-        constant_name = name.upper()
-        env_variable = f"{self._env_prefix}{constant_name}"
-        if env_variable in os.environ:
-            return os.environ[env_variable]
-        if name in self._params:
-            return self._params[name]
-        if hasattr(constants, constant_name):
-            return getattr(constants, constant_name)
-        raise KeyError(f"{name} not found in config.")
+    def asdict(self) -> Dict[str, Any]:
+        return asdict(self)

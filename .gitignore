@@ -7,3 +7,5 @@ __pycache__
 dist
 .eggs
 .DS_Store
+.env
+wandb

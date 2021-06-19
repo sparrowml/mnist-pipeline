@@ -1,0 +1,9 @@
+# Config overrides
+
+# Train
+learning_rate: 0.001
+max_epochs: 1
+
+# Dataset
+num_workers: 4
+batch_size: 64
