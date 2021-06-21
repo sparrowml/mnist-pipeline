@@ -12,7 +12,7 @@ DATA_DIRECTORY = os.environ.get("DATA_DIRECTORY", "./data")
 class MnistConfig:
     # Dataset
     num_workers: int = 4
-    batch_size: int = 128
+    batch_size: int = 64
 
     # Model
     num_classes: int = 10
@@ -20,8 +20,8 @@ class MnistConfig:
 
     # Train
     random_seed: int = 12345
-    learning_rate: float = 0.01
-    max_epochs: int = 1
+    learning_rate: float = 0.05
+    max_epochs: int = 3
 
     # Paths
     data_directory: str = DATA_DIRECTORY
