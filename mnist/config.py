@@ -1,11 +1,12 @@
 import os
 from dataclasses import asdict, dataclass
+from pathlib import Path
 from typing import Any, Dict, List
 
 from dotenv import load_dotenv
 
 load_dotenv()
-DATA_DIRECTORY = os.environ.get("DATA_DIRECTORY", "./data")
+DATA_DIRECTORY = Path(os.environ.get("DATA_DIRECTORY", "./data"))
 
 
 @dataclass
@@ -24,8 +25,9 @@ class MnistConfig:
     max_epochs: int = 3
 
     # Paths
-    data_directory: str = DATA_DIRECTORY
-    feature_weights_path: str = os.path.join(DATA_DIRECTORY, "features.pt")
+    project_directory: str = str(DATA_DIRECTORY.parent.absolute())
+    data_directory: str = str(DATA_DIRECTORY.absolute())
+    feature_weights_path: str = str(DATA_DIRECTORY / "features.pt")
 
     def asdict(self) -> Dict[str, Any]:
         return asdict(self)

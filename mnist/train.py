@@ -1,5 +1,6 @@
 from typing import Tuple
 
+from dvc.repo import Repo
 from pytorch_lightning.loggers import WandbLogger
 import pytorch_lightning as pl
 import torch
@@ -66,4 +67,6 @@ def train_model(
 
 
 def sagemaker_train(*args, **kwargs) -> None:
+    config = MnistConfig()
+    Repo(config.project_directory).pull()
     train_model()
