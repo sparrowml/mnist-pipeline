@@ -1,4 +1,3 @@
-import json
 from typing import Tuple
 
 from pytorch_lightning.loggers import WandbLogger
@@ -45,28 +44,24 @@ class MnistLightning(pl.LightningModule):
 
 
 def train_model(
-    random_seed: int = MnistConfig.random_seed,
     learning_rate: float = MnistConfig.learning_rate,
     max_epochs: int = MnistConfig.max_epochs,
-    feature_weights_path: str = MnistConfig.feature_weights_path,
+    batch_size: int = MnistConfig.batch_size,
 ) -> None:
     """Train the model and save classifier and feature weights."""
-    wandb.init(config=MnistConfig.asdict())
-    wandb.config.update(
-        dict(
-            random_seed=random_seed,
-            learning_rate=learning_rate,
-            max_epochs=max_epochs,
-            feature_weights_path=feature_weights_path,
-        )
+    config = MnistConfig(
+        learning_rate=learning_rate,
+        max_epochs=max_epochs,
+        batch_size=batch_size,
     )
-    pl.utilities.seed.seed_everything(random_seed)
+    wandb.init(config=config.asdict())
+    pl.utilities.seed.seed_everything(config.random_seed)
     logger = WandbLogger(project="mnist-pipeline")
     trainer = pl.Trainer(
-        logger=logger, checkpoint_callback=False, max_epochs=max_epochs
+        logger=logger, checkpoint_callback=False, max_epochs=config.max_epochs
     )
-    train_loader = load_dataset()
-    dev_loader = load_dataset(train=False)
-    pl_model = MnistLightning(learning_rate)
+    train_loader = load_dataset(batch_size=config.batch_size)
+    dev_loader = load_dataset(train=False, batch_size=config.batch_size)
+    pl_model = MnistLightning(config.learning_rate)
     trainer.fit(pl_model, train_loader, dev_loader)
-    torch.save(pl_model.model.features, feature_weights_path)
+    torch.save(pl_model.model.features, config.feature_weights_path)
