@@ -17,10 +17,11 @@ fire = "^0.4.0"
 torchvision = "^0.10.0"
 wandb = "^0.10.32"
 python-dotenv = "^0.17.1"
+sagemaker-training = "^3.9.2"
 
 [tool.poetry.dev-dependencies]
 ipykernel = "^5.5.5"
-dvc = "^2.3.0"
+dvc = {extras = ["s3"], version = "^2.3.0"}
 black = "^21.6b0"
 
 [build-system]

@@ -12,8 +12,3 @@ parameters:
     max: 0.1
   batch_size:
     values: [64, 128, 256]
-
-command:
-  - mnist
-  - train-model
-  - ${args}

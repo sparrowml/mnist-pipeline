@@ -29,23 +29,3 @@ class MnistConfig:
 
     def asdict(self) -> Dict[str, Any]:
         return asdict(self)
-
-
-MnistSweepConfig = dict(
-    name="mnist-sweep",
-    method="bayes",
-    parameters=dict(
-        max_epochs=dict(values=[1, 2, 3]),
-        learning_rate=dict(
-            min=0.0001,
-            max=0.1,
-        ),
-        batch_size=dict(
-            values=[64, 128, 256],
-        ),
-    ),
-    metric=dict(
-        name="dev_accuracy",
-        goal="maximize",
-    ),
-)
