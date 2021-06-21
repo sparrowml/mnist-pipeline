@@ -10,8 +10,6 @@ from .config import MnistConfig
 from .model import MnistClassifier
 from .dataset import load_dataset
 
-wandb.config
-
 
 class MnistLightning(pl.LightningModule):
     def __init__(self, learning_rate: float) -> None:
@@ -65,3 +63,7 @@ def train_model(
     pl_model = MnistLightning(config.learning_rate)
     trainer.fit(pl_model, train_loader, dev_loader)
     torch.save(pl_model.model.features, config.feature_weights_path)
+
+
+def sagemaker_train(*args, **kwargs) -> None:
+    train_model()

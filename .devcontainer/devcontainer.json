@@ -1,8 +1,7 @@
 {
   "name": "Python 3",
   "build": {
-    "dockerfile": "Dockerfile",
-    "context": "..",
+    "dockerfile": "../Dockerfile",
   },
   // Set *default* container specific settings.json values on container create.
   "settings": {
@@ -15,12 +14,16 @@
   },
   // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
-		"ms-python.python",
-		"ms-python.vscode-pylance"
+    "ms-python.python",
+    "ms-python.vscode-pylance"
   ],
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached,readonly",
     "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached",
+  ],
+  "runArgs": [
+    "--env-file",
+    ".env"
   ],
   "postCreateCommand": "poetry install"
 }

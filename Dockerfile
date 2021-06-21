@@ -12,3 +12,6 @@ RUN mkdir mnist
 RUN touch mnist/__init__.py
 
 RUN poetry install
+ADD . .
+
+ENTRYPOINT [ "mnist", "sagemaker-train" ]

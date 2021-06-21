@@ -1,0 +1,5 @@
+mnist_pipeline.egg-info
+wandb
+.eggs
+.vscode
+.devcontainer
