@@ -28,6 +28,7 @@ class MnistConfig:
     project_directory: str = str(DATA_DIRECTORY.parent.absolute())
     data_directory: str = str(DATA_DIRECTORY.absolute())
     feature_weights_path: str = str(DATA_DIRECTORY / "features.pt")
+    sagemaker_weights_path: str = "/opt/ml/model/features.pt"
 
     def asdict(self) -> Dict[str, Any]:
         return asdict(self)
