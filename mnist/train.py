@@ -1,4 +1,4 @@
-from pathlib import Path
+import shutil
 from typing import Tuple
 
 from dvc.repo import Repo
@@ -71,4 +71,4 @@ def sagemaker_train(*args, **kwargs) -> None:
     config = MnistConfig()
     Repo(config.project_directory).pull()
     train_model()
-    Path(config.feature_weights_path).rename(config.sagemaker_weights_path)
+    shutil.move(config.feature_weights_path, config.sagemaker_weights_path)
