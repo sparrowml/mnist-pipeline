@@ -32,7 +32,7 @@ jobs:
   run:
     needs: build    
     runs-on: ubuntu-latest
-    container: python:3.9:latest
+    container: python:3.9
     steps:
       - uses: iterative/setup-cml@v1
       - name: CML run
