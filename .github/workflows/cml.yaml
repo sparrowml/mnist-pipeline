@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   run:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
