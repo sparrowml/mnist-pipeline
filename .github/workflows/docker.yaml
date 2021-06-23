@@ -26,7 +26,9 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: mnist-pipeline
+          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
         run: |
+          echo "WANDB_API_KEY=$WANDB_API_KEY" > .env
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_NAME .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_NAME
           echo $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_NAME
