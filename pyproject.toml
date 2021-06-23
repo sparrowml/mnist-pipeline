@@ -17,6 +17,7 @@ fire = "^0.4.0"
 torchvision = "^0.10.0"
 wandb = "^0.10.32"
 python-dotenv = "^0.17.1"
+sagemaker = "^2.46.1"
 
 [tool.poetry.dev-dependencies]
 ipykernel = "^5.5.5"

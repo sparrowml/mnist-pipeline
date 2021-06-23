@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DATA_DIRECTORY = Path(os.environ.get("DATA_DIRECTORY", "./data"))
+SM_MODEL_DIR = Path(os.environ.get("SM_MODEL_DIR", "/opt/ml/model"))
 
 
 @dataclass
@@ -28,7 +29,7 @@ class MnistConfig:
     project_directory: str = str(DATA_DIRECTORY.parent.absolute())
     data_directory: str = str(DATA_DIRECTORY.absolute())
     feature_weights_path: str = str(DATA_DIRECTORY / "features.pt")
-    sagemaker_weights_path: str = "/opt/ml/model/features.pt"
+    sagemaker_weights_path: str = str(SM_MODEL_DIR / "features.pt")
 
     def asdict(self) -> Dict[str, Any]:
         return asdict(self)

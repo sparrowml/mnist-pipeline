@@ -4,6 +4,7 @@ from typing import Tuple
 from dvc.repo import Repo
 from pytorch_lightning.loggers import WandbLogger
 import pytorch_lightning as pl
+import sagemaker
 import torch
 import torchmetrics
 import wandb
@@ -67,8 +68,20 @@ def train_model(
     torch.save(pl_model.model.features, config.feature_weights_path)
 
 
-def sagemaker_train(*args, **kwargs) -> None:
+def run_sagemaker_train(*args, **kwargs) -> None:
     config = MnistConfig()
     Repo(config.project_directory).pull()
     train_model()
     shutil.move(config.feature_weights_path, config.sagemaker_weights_path)
+
+
+def launch_sagemaker_train() -> None:
+    estimator = sagemaker.estimator.Estimator(
+        image_uri="537534971119.dkr.ecr.us-east-1.amazonaws.com/mnist-pipeline:latest",
+        role="arn:aws:iam::537534971119:role/service-role/AmazonSageMaker-ExecutionRole-20191128T144230",
+        instance_count=1,
+        instance_type="ml.m4.xlarge",
+        max_run=3600,
+        output_path="s3://sparrowcomputing/sagemaker/",
+    )
+    estimator.fit()
