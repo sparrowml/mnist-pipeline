@@ -1,7 +1,7 @@
 import fire
 
 from .dataset import save_datasets
-from .train import train_model, sagemaker_train
+from .train import train_model, launch_sagemaker_train, run_sagemaker_train
 from .sweep import start_sweep, launch_agent
 
 
@@ -11,7 +11,8 @@ def main():
         {
             "save-datasets": save_datasets,
             "train-model": train_model,
-            "sagemaker-train": sagemaker_train,
+            "launch-sagemaker-train": launch_sagemaker_train,
+            "run-sagemaker-train": run_sagemaker_train,
             "start-sweep": start_sweep,
             "launch-agent": launch_agent,
         }

@@ -75,10 +75,13 @@ def run_sagemaker_train(*args, **kwargs) -> None:
     shutil.move(config.feature_weights_path, config.sagemaker_weights_path)
 
 
-def launch_sagemaker_train() -> None:
+def launch_sagemaker_train(
+    image_uri: str,
+) -> None:
+    config = MnistConfig()
     estimator = sagemaker.estimator.Estimator(
-        image_uri="537534971119.dkr.ecr.us-east-1.amazonaws.com/mnist-pipeline:latest",
-        role="arn:aws:iam::537534971119:role/service-role/AmazonSageMaker-ExecutionRole-20191128T144230",
+        image_uri=image_uri,
+        role=config.sagemaker_execution_role,
         instance_count=1,
         instance_type="ml.m4.xlarge",
         max_run=3600,

@@ -29,7 +29,10 @@ class MnistConfig:
     project_directory: str = str(DATA_DIRECTORY.parent.absolute())
     data_directory: str = str(DATA_DIRECTORY.absolute())
     feature_weights_path: str = str(DATA_DIRECTORY / "features.pt")
+
+    # SageMaker
     sagemaker_weights_path: str = str(SM_MODEL_DIR / "features.pt")
+    sagemaker_execution_role: str = os.getenv("SM_EXECUTION_ROLE")
 
     def asdict(self) -> Dict[str, Any]:
         return asdict(self)
