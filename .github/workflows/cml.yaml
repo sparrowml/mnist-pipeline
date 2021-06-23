@@ -1,6 +1,6 @@
 name: train-model
 
-on: [workflow_dispatch]
+on: [push]
 
 jobs:
   run:
