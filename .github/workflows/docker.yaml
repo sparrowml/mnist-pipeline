@@ -27,5 +27,6 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: mnist-pipeline
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${BRANCH_NAME} .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:${BRANCH_NAME}
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_NAME .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_NAME
+          echo $ECR_REGISTRY/$ECR_REPOSITORY:$BRANCH_NAME
