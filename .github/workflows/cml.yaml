@@ -11,7 +11,7 @@ jobs:
         - name: Configure AWS credentials
           uses: aws-actions/configure-aws-credentials@v1
           with:
-            aws-secret-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: us-east-1
         - name: Login to Amazon ECR
@@ -29,20 +29,21 @@ jobs:
             echo "::set-output name=image_uri::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
   run:
-     runs-on: ubuntu-latest
-     container: python:3.9:latest
-     steps:
-        - uses: actions/checkout@v2
-        - uses: iterative/setup-cml@v1
-        - name: CML run
-          env:
-            repo_token: ${{ secrets.GITHUB_TOKEN }}
-            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: us-east-1
-          run: |
-            pip install poetry
-            poetry install
-            mnist launch-sagemaker-train ${{needs.build.outputs.image_uri}}
+    needs: build    
+    runs-on: ubuntu-latest
+    container: python:3.9:latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: iterative/setup-cml@v1
+      - name: CML run
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+        run: |
+          pip install poetry
+          poetry install
+          mnist launch-sagemaker-train ${{needs.build.outputs.image_uri}}
 
-            # TODO: send report back to GitHub
+          # TODO: send report back to GitHub
