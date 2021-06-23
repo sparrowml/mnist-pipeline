@@ -5,7 +5,6 @@ on: [push]
 jobs:
   run:
     runs-on: self-hosted
-    container: python:3.9
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
