@@ -3,3 +3,4 @@ wandb
 .eggs
 .vscode
 .devcontainer
+.github

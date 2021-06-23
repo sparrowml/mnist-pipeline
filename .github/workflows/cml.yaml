@@ -1,6 +1,6 @@
 name: train-model
 
-on: [push, workflow_dispatch]
+on: [workflow_dispatch]
 
 jobs:
   run:
@@ -16,23 +16,3 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       - uses: actions/checkout@v2
-      - name: Docker pull
-        run: docker pull python:3.9
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-      - name: Build, tag, and push image to Amazon ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: mnist-pipeline
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-      - name: Run training job
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: mnist-pipeline
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker run -v $HOME/.aws:/root/.aws \
-            --entrypoint "mnist launch-sagemaker-train $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" \
-            $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
