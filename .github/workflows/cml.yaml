@@ -35,6 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     container: docker://dvcorg/cml-py3:latest
     steps:
+      - uses: actions/checkout@v2
       - name: CML run
         env:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -42,8 +43,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: us-east-1
         run: |
-          pip install poetry
-          poetry install
+          pip install .
           mnist launch-sagemaker-train ${{needs.build.outputs.image_uri}}
 
           # TODO: send report back to GitHub
