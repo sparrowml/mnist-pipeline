@@ -33,7 +33,6 @@ jobs:
      container: python:3.9:latest
      steps:
         - uses: actions/checkout@v2
-        - name: 
         - uses: iterative/setup-cml@v1
         - name: CML run
           env:
