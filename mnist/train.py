@@ -76,15 +76,27 @@ def run_sagemaker_train(*args, **kwargs) -> None:
 
 
 def launch_sagemaker_train(
-    image_uri: str,
+    ecr_image: str = MnistConfig.ecr_image,
+    branch_name: str = MnistConfig.branch_name,
+    instance_count: int = MnistConfig.instance_count,
+    instance_type: str = MnistConfig.instance_type,
+    max_run_duration: int = MnistConfig.max_run_duration,
+    model_output_path: str = MnistConfig.model_output_path,
 ) -> None:
-    config = MnistConfig()
+    config = MnistConfig(
+        ecr_image=ecr_image,
+        branch_name=branch_name,
+        instance_count=instance_count,
+        instance_type=instance_type,
+        max_run_duration=max_run_duration,
+        model_output_path=model_output_path,
+    )
     estimator = sagemaker.estimator.Estimator(
-        image_uri=image_uri,
+        image_uri=f"{config.ecr_image}:{config.branch_name}",
         role=config.sagemaker_execution_role,
-        instance_count=1,
-        instance_type="ml.m4.xlarge",
-        max_run=3600,
-        output_path="s3://sparrowcomputing/sagemaker/",
+        instance_count=instance_count,
+        instance_type=instance_type,
+        max_run=config.max_run_duration,
+        output_path=config.model_output_path,
     )
     estimator.fit()

@@ -31,6 +31,12 @@ class MnistConfig:
     feature_weights_path: str = str(DATA_DIRECTORY / "features.pt")
 
     # SageMaker
+    ecr_image: str = "537534971119.dkr.ecr.us-east-1.amazonaws.com/mnist-pipeline"
+    branch_name: str = "main"
+    instance_count: int = 1
+    instance_type: str = "ml.m4.xlarge"
+    max_run_duration: str = 3600
+    model_output_path: str = "s3://sparrowcomputing/sagemaker/"
     sagemaker_weights_path: str = str(SM_MODEL_DIR / "features.pt")
     sagemaker_execution_role: str = os.getenv("SM_EXECUTION_ROLE")
 

@@ -15,17 +15,10 @@ stages:
       size: 66544770
       nfiles: 8
     - path: mnist
-      md5: c63fe8b509d68764740daa5c9d8d22cf.dir
-      size: 23976
-      nfiles: 18
-    params:
-      params.yaml:
-        batch_size: 64
-        learning_rate: 0.001
+      md5: 1712e918ab1cca7b91ed236bc1c0af39.dir
+      size: 28070
+      nfiles: 19
     outs:
-    - path: data/accuracy.json
-      md5: adbd767ec300878d0fa2745a0f6d2ee8
-      size: 36
     - path: data/features.pt
-      md5: b503261ed7caeee8967ab90f598c4c97
+      md5: 573d9ad36de1ff74addc6d4f50e01354
       size: 80459

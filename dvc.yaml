@@ -10,9 +10,3 @@ stages:
     - mnist
     outs:
     - data/features.pt
-    metrics:
-    - data/accuracy.json:
-        cache: false
-    params:
-    - learning_rate
-    - batch_size
