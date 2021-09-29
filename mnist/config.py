@@ -6,7 +6,7 @@ from typing import Any, Dict, List
 from dotenv import load_dotenv
 
 load_dotenv()
-DATA_DIRECTORY = Path(os.environ.get("DATA_DIRECTORY", "./data"))
+DATA_ROOT = Path(os.environ.get("DATA_ROOT", "./data"))
 SM_MODEL_DIR = Path(os.environ.get("SM_MODEL_DIR", "/opt/ml/model"))
 
 
@@ -26,9 +26,10 @@ class MnistConfig:
     max_epochs: int = 3
 
     # Paths
-    project_directory: str = str(DATA_DIRECTORY.parent.absolute())
-    data_directory: str = str(DATA_DIRECTORY.absolute())
-    feature_weights_path: str = str(DATA_DIRECTORY / "features.pt")
+    project_directory: str = str(DATA_ROOT.parent.absolute())
+    data_root: str = str(DATA_ROOT.absolute())
+    data_directory: str = str(DATA_ROOT / "MNIST" / "raw")
+    feature_weights_path: str = str(DATA_ROOT / "features.pt")
 
     # SageMaker
     ecr_image: str = "537534971119.dkr.ecr.us-east-1.amazonaws.com/mnist-pipeline"

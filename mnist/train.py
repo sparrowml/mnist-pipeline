@@ -2,12 +2,10 @@ import shutil
 from typing import Tuple
 
 from dvc.repo import Repo
-from pytorch_lightning.loggers import WandbLogger
 import pytorch_lightning as pl
 import sagemaker
 import torch
 import torchmetrics
-import wandb
 
 from .config import MnistConfig
 from .model import MnistClassifier
@@ -55,12 +53,8 @@ def train_model(
         max_epochs=max_epochs,
         batch_size=batch_size,
     )
-    wandb.init(config=config.asdict())
     pl.utilities.seed.seed_everything(config.random_seed)
-    logger = WandbLogger(project="mnist-pipeline")
-    trainer = pl.Trainer(
-        logger=logger, checkpoint_callback=False, max_epochs=config.max_epochs
-    )
+    trainer = pl.Trainer(checkpoint_callback=False, max_epochs=config.max_epochs)
     train_loader = load_dataset(batch_size=config.batch_size)
     dev_loader = load_dataset(train=False, batch_size=config.batch_size)
     pl_model = MnistLightning(config.learning_rate)

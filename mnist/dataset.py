@@ -1,13 +1,20 @@
+import glob
+from pathlib import Path
+
 from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.datasets import MNIST
+from torchvision.datasets.utils import extract_archive
 
 from .config import MnistConfig
 
 
-def save_datasets() -> None:
+def gunzip_datasets() -> None:
     """Write train and test datasets"""
-    MNIST(MnistConfig.data_directory, download=True)
+    gzip_pattern = str(Path(MnistConfig.data_directory) / "*.gz")
+    for file_path in glob.glob(gzip_pattern):
+        print(f"Extracting {file_path}")
+        extract_archive(file_path)
 
 
 def load_dataset(
@@ -17,8 +24,7 @@ def load_dataset(
     """Create a data loader"""
     config = MnistConfig(batch_size=batch_size)
     dataset = MNIST(
-        config.data_directory,
-        download=True,
+        config.data_root,
         train=train,
         transform=transforms.ToTensor(),
     )
