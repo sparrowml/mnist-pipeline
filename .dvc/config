@@ -1,4 +1,1 @@
-[core]
-    remote = s3-storage
-['remote "s3-storage"']
-    url = s3://sparrowcomputing/dvcstore/mnist-pipeline
+
