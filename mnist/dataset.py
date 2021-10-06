@@ -11,10 +11,11 @@ from .config import MnistConfig
 
 def gunzip_datasets() -> None:
     """Write train and test datasets"""
-    gzip_pattern = str(Path(MnistConfig.data_directory) / "*.gz")
+    gzip_pattern = str(Path(MnistConfig.raw_directory) / "*.gz")
+    Path(MnistConfig.processed_directory).mkdir(parents=True, exist_ok=True)
     for file_path in glob.glob(gzip_pattern):
         print(f"Extracting {file_path}")
-        extract_archive(file_path)
+        extract_archive(file_path, MnistConfig.processed_directory)
 
 
 def load_dataset(

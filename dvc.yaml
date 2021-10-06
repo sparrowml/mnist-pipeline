@@ -1,0 +1,7 @@
+stages:
+  gunzip-datasets:
+    cmd: mnist gunzip-datasets
+    deps:
+    - data/raw
+    outs:
+    - data/processed
