@@ -28,7 +28,8 @@ class MnistConfig:
     # Paths
     project_directory: str = str(DATA_ROOT.parent.absolute())
     data_root: str = str(DATA_ROOT.absolute())
-    data_directory: str = str(DATA_ROOT / "MNIST" / "raw")
+    raw_directory: str = str(DATA_ROOT / "raw")
+    processed_directory: str = str(DATA_ROOT / "processed")
     feature_weights_path: str = str(DATA_ROOT / "features.pt")
 
     # SageMaker
