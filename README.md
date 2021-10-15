@@ -2,22 +2,35 @@
 A toy ML pipeline that creates a digit classifier with features that can be exported.
 
 ```
-+---------------+  
-| save-datasets |  
-+---------------+  
-        *          
-        *          
-        *          
- +-------------+   
- | train-model |   
- +-------------+
+  +--------------+   
+  | data/raw.dvc |   
+  +--------------+   
+          *          
+          *          
+          *          
++-----------------+  
+| gunzip-datasets |  
++-----------------+  
+          *          
+          *          
+          *          
+  +-------------+    
+  | train-model |    
+  +-------------+
 ```
 
-## Running the pipeline
+## Quick Start
 
-There are two commands in the pipeline:
+You can reproduce the pipeline with the following commands:
 
-1. `save-dataset`
-2. `train-model`
+```
+make install
+make pull
+make repro
+```
 
-Each command can be run with with `mnist` CLI, e.g. `mnist save-datasets`.
+Take a look at the [Makefile](./Makefile) to see what the commands are doing.
+
+## Development
+
+For development, it's strongly recommended to use the remote containers plugin. Build the image and start developing inside the resulting Docker container. You will need to define a `.env` file locally.
