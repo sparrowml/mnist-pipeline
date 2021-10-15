@@ -16,7 +16,6 @@ pytorch-lightning = "^1.3.5"
 fire = "^0.4.0"
 torchvision = "^0.10.0"
 python-dotenv = "^0.17.1"
-sagemaker = "^2.46.1"
 
 [tool.poetry.dev-dependencies]
 ipykernel = "^5.5.5"
@@ -27,6 +26,3 @@ awscli = "~1.19.106"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-mnist = "mnist.__main__:main"

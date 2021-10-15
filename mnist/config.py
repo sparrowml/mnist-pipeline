@@ -1,7 +1,7 @@
 import os
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict
 
 from dotenv import load_dotenv
 
@@ -31,16 +31,6 @@ class MnistConfig:
     raw_directory: str = str(DATA_ROOT / "raw")
     processed_directory: str = str(DATA_ROOT / "processed")
     feature_weights_path: str = str(DATA_ROOT / "features.pt")
-
-    # SageMaker
-    ecr_image: str = "537534971119.dkr.ecr.us-east-1.amazonaws.com/mnist-pipeline"
-    branch_name: str = "main"
-    instance_count: int = 1
-    instance_type: str = "ml.m4.xlarge"
-    max_run_duration: str = 3600
-    model_output_path: str = "s3://sparrowcomputing/sagemaker/"
-    sagemaker_weights_path: str = str(SM_MODEL_DIR / "features.pt")
-    sagemaker_execution_role: str = os.getenv("SM_EXECUTION_ROLE")
 
     def asdict(self) -> Dict[str, Any]:
         return asdict(self)

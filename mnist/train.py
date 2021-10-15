@@ -1,9 +1,6 @@
-import shutil
 from typing import Tuple
 
-from dvc.repo import Repo
 import pytorch_lightning as pl
-import sagemaker
 import torch
 import torchmetrics
 
@@ -60,37 +57,3 @@ def train_model(
     pl_model = MnistLightning(config.learning_rate)
     trainer.fit(pl_model, train_loader, dev_loader)
     torch.save(pl_model.model.features, config.feature_weights_path)
-
-
-def run_sagemaker_train(*args, **kwargs) -> None:
-    config = MnistConfig()
-    Repo(config.project_directory).pull()
-    train_model()
-    shutil.move(config.feature_weights_path, config.sagemaker_weights_path)
-
-
-def launch_sagemaker_train(
-    ecr_image: str = MnistConfig.ecr_image,
-    branch_name: str = MnistConfig.branch_name,
-    instance_count: int = MnistConfig.instance_count,
-    instance_type: str = MnistConfig.instance_type,
-    max_run_duration: int = MnistConfig.max_run_duration,
-    model_output_path: str = MnistConfig.model_output_path,
-) -> None:
-    config = MnistConfig(
-        ecr_image=ecr_image,
-        branch_name=branch_name,
-        instance_count=instance_count,
-        instance_type=instance_type,
-        max_run_duration=max_run_duration,
-        model_output_path=model_output_path,
-    )
-    estimator = sagemaker.estimator.Estimator(
-        image_uri=f"{config.ecr_image}:{config.branch_name}",
-        role=config.sagemaker_execution_role,
-        instance_count=instance_count,
-        instance_type=instance_type,
-        max_run=config.max_run_duration,
-        output_path=config.model_output_path,
-    )
-    estimator.fit()

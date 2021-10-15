@@ -1,6 +1,6 @@
 stages:
   gunzip-datasets:
-    cmd: mnist gunzip-datasets
+    cmd: python main.py gunzip-datasets
     deps:
     - data/raw
     - mnist/config.py
@@ -8,7 +8,7 @@ stages:
     outs:
     - data/processed
   train-model:
-    cmd: mnist train-model
+    cmd: python main.py train-model
     deps:
     - data/processed
     - mnist/config.py
