@@ -14,4 +14,4 @@ RUN touch mnist/__init__.py
 RUN poetry install
 ADD . .
 
-ENTRYPOINT [ "mnist", "run-sagemaker-train" ]
+ENTRYPOINT [ "make", "repro" ]
