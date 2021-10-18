@@ -1,6 +1,4 @@
 [core]
     remote = s3
 ['remote "s3"']
-    url = s3://sparrowcomputing/dvc/mnist
-['remote "s3-public"']
     url = s3://sparrowml-public/dvc/mnist-pipeline
