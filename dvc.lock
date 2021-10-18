@@ -36,5 +36,9 @@ stages:
       size: 2131
     outs:
     - path: data/features.pt
+<<<<<<< HEAD
       md5: c0ed8a87cf58e15f019fdd295c4ccdb7
+=======
+      md5: 480fc15d4f0aacedd20bd626f4e157a0
+>>>>>>> 228c0cf94930e12553ca900f052dc57d75170886
       size: 80459
