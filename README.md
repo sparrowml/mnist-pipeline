@@ -2,20 +2,20 @@
 A toy ML pipeline that creates a digit classifier with features that can be exported.
 
 ```
-  +--------------+   
-  | data/raw.dvc |   
-  +--------------+   
-          *          
-          *          
-          *          
-+-----------------+  
-| gunzip-datasets |  
-+-----------------+  
-          *          
-          *          
-          *          
-  +-------------+    
-  | train-model |    
+  +--------------+
+  | data/raw.dvc |
+  +--------------+
+          *
+          *
+          *
++-----------------+
+| gunzip-datasets |
++-----------------+
+          *
+          *
+          *
+  +-------------+
+  | train-model |
   +-------------+
 ```
 

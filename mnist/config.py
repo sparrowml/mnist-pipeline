@@ -23,7 +23,7 @@ class MnistConfig:
     # Train
     random_seed: int = 12345
     learning_rate: float = 0.05
-    max_epochs: int = 3
+    max_epochs: int = 2
 
     # Paths
     project_directory: str = str(DATA_ROOT.parent.absolute())
