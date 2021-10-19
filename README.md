@@ -24,12 +24,9 @@ A toy ML pipeline that creates a digit classifier with features that can be expo
 You can reproduce the pipeline with the following commands:
 
 ```
-make install
-make pull
-make repro
+pip install .
+dvc repro
 ```
-
-Take a look at the [Makefile](./Makefile) to see what the commands are doing.
 
 ## Development
 
