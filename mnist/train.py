@@ -43,6 +43,7 @@ def train_model(
     learning_rate: float = MnistConfig.learning_rate,
     max_epochs: int = MnistConfig.max_epochs,
     batch_size: int = MnistConfig.batch_size,
+    progress_bar: bool = False,
 ) -> None:
     """Train the model and save classifier and feature weights."""
     config = MnistConfig(
@@ -51,7 +52,11 @@ def train_model(
         batch_size=batch_size,
     )
     pl.utilities.seed.seed_everything(config.random_seed)
-    trainer = pl.Trainer(checkpoint_callback=False, max_epochs=config.max_epochs)
+    trainer = pl.Trainer(
+        checkpoint_callback=False,
+        max_epochs=config.max_epochs,
+        progress_bar_refresh_rate=None if progress_bar else 0,
+    )
     train_loader = load_dataset(batch_size=config.batch_size)
     dev_loader = load_dataset(train=False, batch_size=config.batch_size)
     pl_model = MnistLightning(config.learning_rate)
