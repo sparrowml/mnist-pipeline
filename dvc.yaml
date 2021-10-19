@@ -1,6 +1,6 @@
 stages:
-  gunzip-datasets:
-    cmd: python main.py gunzip-datasets
+  gunzip-dataset:
+    cmd: python main.py gunzip-dataset
     deps:
     - data/raw
     - mnist/dataset.py

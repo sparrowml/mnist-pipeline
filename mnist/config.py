@@ -23,6 +23,7 @@ class MnistConfig:
     max_epochs: int = 2
 
     # Paths
+    repo_root: Path = Path(os.environ.get("REPO_ROOT", "."))
     data_root: Path = Path(os.environ.get("DATA_ROOT", "./data"))
 
     @classmethod
