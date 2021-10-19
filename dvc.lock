@@ -8,11 +8,11 @@ stages:
       size: 11594722
       nfiles: 4
     - path: mnist/config.py
-      md5: 1fdca091933612825584c97ea4cf5706
-      size: 908
+      md5: 9de6c69cf9f269c54cbf1e3e2076b382
+      size: 852
     - path: mnist/dataset.py
-      md5: 0a875005e736f2833bd0a64876c3bea3
-      size: 1623
+      md5: 4ab8870fe2080b4c8457bae02324d117
+      size: 1656
     outs:
     - path: data/processed
       md5: d0193be11ab497254ec667a4864050d9.dir
@@ -26,11 +26,11 @@ stages:
       size: 54950048
       nfiles: 4
     - path: mnist/config.py
-      md5: 1fdca091933612825584c97ea4cf5706
-      size: 908
+      md5: 9de6c69cf9f269c54cbf1e3e2076b382
+      size: 852
     - path: mnist/dataset.py
-      md5: 0a875005e736f2833bd0a64876c3bea3
-      size: 1623
+      md5: 4ab8870fe2080b4c8457bae02324d117
+      size: 1656
     - path: mnist/train.py
       md5: 8261a43ddd610634b9953b2a1a690fa4
       size: 2131

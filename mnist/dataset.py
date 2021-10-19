@@ -44,7 +44,7 @@ def load_dataset(
     dataset = MnistDataset(config.processed_directory, train=train)
     return DataLoader(
         dataset,
-        shuffle=True,
+        shuffle=train,  # Turn shuffle off for dev set
         batch_size=config.batch_size,
         num_workers=config.num_workers,
     )

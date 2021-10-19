@@ -1,13 +1,11 @@
 import os
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict
 
 from dotenv import load_dotenv
 
 load_dotenv()
-DATA_ROOT = Path(os.environ.get("DATA_ROOT", "./data"))
-SM_MODEL_DIR = Path(os.environ.get("SM_MODEL_DIR", "/opt/ml/model"))
 
 
 @dataclass
@@ -26,11 +24,19 @@ class MnistConfig:
     max_epochs: int = 2
 
     # Paths
-    project_directory: str = str(DATA_ROOT.parent.absolute())
-    data_root: str = str(DATA_ROOT.absolute())
-    raw_directory: str = str(DATA_ROOT / "raw")
-    processed_directory: str = str(DATA_ROOT / "processed")
-    feature_weights_path: str = str(DATA_ROOT / "features.pt")
+    data_root: Path = Path(os.environ.get("DATA_ROOT", "./data"))
 
-    def asdict(self) -> Dict[str, Any]:
-        return asdict(self)
+    @classmethod
+    @property
+    def raw_directory(self) -> str:
+        return str(self.data_root / "raw")
+
+    @classmethod
+    @property
+    def processed_directory(self) -> str:
+        return str(self.data_root / "processed")
+
+    @classmethod
+    @property
+    def feature_weights_path(self) -> str:
+        return str(self.data_root / "features.pt")
