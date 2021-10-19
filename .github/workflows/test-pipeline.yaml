@@ -13,5 +13,5 @@ jobs:
       - name: Test pipeline
         run: |
           make install
-          dvc pull
+          make pull-data
           dvc repro
