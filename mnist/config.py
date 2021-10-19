@@ -16,6 +16,7 @@ class MnistConfig:
     # Model
     num_classes: int = 10
     feature_dimensions: int = 9216
+    s3_remote: str = "s3"
 
     # Train
     random_seed: int = 12345

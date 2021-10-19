@@ -49,3 +49,9 @@ stages:
     - path: data/features.pt
       md5: 7bfe2b4e05e37f7a4314205d6cf1b27b
       size: 80459
+  deploy-model:
+    cmd: python main.py deploy-model
+    deps:
+    - path: data/features.pt
+      md5: 7bfe2b4e05e37f7a4314205d6cf1b27b
+      size: 80459
