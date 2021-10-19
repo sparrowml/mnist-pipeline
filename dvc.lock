@@ -25,16 +25,19 @@ stages:
       md5: d0193be11ab497254ec667a4864050d9.dir
       size: 54950048
       nfiles: 4
-    - path: mnist/config.py
-      md5: 4945c0bfe966808c239abe25084eab9c
-      size: 1155
     - path: mnist/dataset.py
       md5: 4ab8870fe2080b4c8457bae02324d117
       size: 1656
     - path: mnist/train.py
       md5: 8261a43ddd610634b9953b2a1a690fa4
       size: 2131
+    params:
+      mnist/config.py:
+        MnistConfig.batch_size: 64
+        MnistConfig.learning_rate: 0.05
+        MnistConfig.max_epochs: 2
+        MnistConfig.random_seed: 12345
     outs:
     - path: data/features.pt
-      md5: a3e20e49fd918e379f48429e9f9e458e
+      md5: 7bfe2b4e05e37f7a4314205d6cf1b27b
       size: 80459
