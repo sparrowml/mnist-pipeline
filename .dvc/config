@@ -1,4 +1,6 @@
 [core]
-    remote = s3
+    remote = http
+['remote "http"']
+    url = https://sparrowml-public.s3.amazonaws.com/dvc/mnist-pipeline    
 ['remote "s3"']
     url = s3://sparrowml-public/dvc/mnist-pipeline
