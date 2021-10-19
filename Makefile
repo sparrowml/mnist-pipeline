@@ -13,3 +13,6 @@ pull-model:
 
 push-model:
 	dvc push -r s3 data/features.pt
+
+pipeline: pull-data
+	dvc repro
