@@ -1,27 +1,29 @@
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict
 
 from dotenv import load_dotenv
+from ruamel.yaml import YAML
 
 load_dotenv()
+YAML_OVERRIDES_PATH = os.environ.get("YAML_OVERRIDES", "./params.yaml")
+yaml_overrides = YAML().load(open(YAML_OVERRIDES_PATH))
 
 
 @dataclass
 class MnistConfig:
     # Dataset
-    num_workers: int = 4
-    batch_size: int = 64
+    num_workers: int = yaml_overrides.get("num_workers", 4)
+    batch_size: int = yaml_overrides.get("batch_size", 64)
 
     # Model
     num_classes: int = 10
     feature_dimensions: int = 9216
 
     # Train
-    random_seed: int = 12345
-    learning_rate: float = 0.05
-    max_epochs: int = 2
+    random_seed: int = yaml_overrides.get("random_seed", 12345)
+    learning_rate: float = yaml_overrides.get("learning_rate", 0.05)
+    max_epochs: int = yaml_overrides.get("max_epochs", 2)
 
     # Paths
     data_root: Path = Path(os.environ.get("DATA_ROOT", "./data"))
