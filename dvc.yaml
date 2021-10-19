@@ -1,10 +1,4 @@
 stages:
-  download-dataset:
-    cmd: python main.py download-dataset
-    deps:
-    - mnist/dataset.py
-    outs:
-    - data/raw
   gunzip-dataset:
     cmd: python main.py gunzip-dataset
     deps:
@@ -27,8 +21,4 @@ stages:
       - MnistConfig.learning_rate
       - MnistConfig.max_epochs
     outs:
-    - data/features.pt
-  deploy-model:
-    cmd: python main.py deploy-model
-    deps:
     - data/features.pt

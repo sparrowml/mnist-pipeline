@@ -3,31 +3,10 @@ import os
 from pathlib import Path
 from typing import Tuple
 
-import dvc.api
-from dvc.repo import Repo
 from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets
 
 from .config import MnistConfig
-
-
-def download_dataset(
-    repo_root: str = MnistConfig.repo_root,
-    raw_directory: str = MnistConfig.raw_directory,
-    remote_repo: str = MnistConfig.remote_repo,
-    remote_path: str = MnistConfig.remote_path,
-) -> None:
-    """Pull dataset from remote"""
-    Path(raw_directory).mkdir(parents=True, exist_ok=True)
-    repo = Repo(repo_root)
-    files = repo.ls(remote_repo, remote_path)
-    for file in files:
-        full_remote_path = os.path.join(remote_path, file["path"])
-        full_local_path = os.path.join(raw_directory, file["path"])
-        with dvc.api.open(full_remote_path, repo=remote_repo, mode="rb") as remote:
-            print(f"Downloading {full_remote_path}")
-            with open(full_local_path, "wb") as local:
-                local.write(remote.read())
 
 
 def gunzip_dataset(

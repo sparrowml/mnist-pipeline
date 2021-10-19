@@ -1,7 +1,6 @@
 from typing import Optional
 
 import torch
-from dvc.repo import Repo
 
 from .config import MnistConfig
 
@@ -44,16 +43,3 @@ class MnistClassifier(torch.nn.Module):
             x = self.batch_norm(x)
         x = self.classifier(x)
         return x
-
-
-def deploy_model(
-    repo_root: str = MnistConfig.repo_root,
-    feature_weights_path: str = MnistConfig.feature_weights_path,
-    s3_remote: str = MnistConfig.s3_remote,
-) -> None:
-    """Push model weights to S3 remote"""
-    repo = Repo(repo_root)
-    repo.push(
-        targets=[feature_weights_path],
-        remote=s3_remote,
-    )

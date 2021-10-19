@@ -1,16 +1,5 @@
 schema: '2.0'
 stages:
-  download-dataset:
-    cmd: python main.py download-dataset
-    deps:
-    - path: mnist/dataset.py
-      md5: c26828a2fba05d7d59536c651c2a275b
-      size: 2564
-    outs:
-    - path: data/raw
-      md5: b6c29e96813679dd8c451c9b5ca86e2c.dir
-      size: 11594722
-      nfiles: 4
   gunzip-dataset:
     cmd: python main.py gunzip-dataset
     deps:
@@ -19,8 +8,8 @@ stages:
       size: 11594722
       nfiles: 4
     - path: mnist/dataset.py
-      md5: c26828a2fba05d7d59536c651c2a275b
-      size: 2564
+      md5: 799d9f92a8cb52c4ae75a657eb77a24e
+      size: 1736
     outs:
     - path: data/processed
       md5: d0193be11ab497254ec667a4864050d9.dir
@@ -34,8 +23,8 @@ stages:
       size: 54950048
       nfiles: 4
     - path: mnist/dataset.py
-      md5: c26828a2fba05d7d59536c651c2a275b
-      size: 2564
+      md5: 799d9f92a8cb52c4ae75a657eb77a24e
+      size: 1736
     - path: mnist/train.py
       md5: 8261a43ddd610634b9953b2a1a690fa4
       size: 2131
@@ -43,15 +32,9 @@ stages:
       mnist/config.py:
         MnistConfig.batch_size: 64
         MnistConfig.learning_rate: 0.05
-        MnistConfig.max_epochs: 2
+        MnistConfig.max_epochs: 1
         MnistConfig.random_seed: 12345
     outs:
     - path: data/features.pt
-      md5: 7bfe2b4e05e37f7a4314205d6cf1b27b
-      size: 80459
-  deploy-model:
-    cmd: python main.py deploy-model
-    deps:
-    - path: data/features.pt
-      md5: 7bfe2b4e05e37f7a4314205d6cf1b27b
+      md5: 1f9b799f3b0305f6c0083004ab038b97
       size: 80459

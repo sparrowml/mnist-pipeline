@@ -16,18 +16,14 @@ class MnistConfig:
     # Model
     num_classes: int = 10
     feature_dimensions: int = 9216
-    s3_remote: str = "s3"
 
     # Train
     random_seed: int = 12345
     learning_rate: float = 0.05
-    max_epochs: int = 2
+    max_epochs: int = 1
 
     # Paths
-    repo_root: str = os.environ.get("REPO_ROOT", ".")
     data_root: Path = Path(os.environ.get("DATA_ROOT", "./data"))
-    remote_repo: str = "https://github.com/iterative/dataset-registry"
-    remote_path: str = "mnist/raw"
 
     @classmethod
     @property
