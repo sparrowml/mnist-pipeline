@@ -1,4 +1,10 @@
 stages:
+  download-dataset:
+    cmd: python main.py download-dataset
+    deps:
+    - mnist/dataset.py
+    outs:
+    - data/raw
   gunzip-dataset:
     cmd: python main.py gunzip-dataset
     deps:

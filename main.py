@@ -1,6 +1,6 @@
 import fire
 
-from mnist.dataset import pull_dataset, gunzip_dataset
+from mnist.dataset import download_dataset, gunzip_dataset
 from mnist.train import train_model
 
 
@@ -8,7 +8,7 @@ def main():
     """Expose CLI functions."""
     fire.Fire(
         {
-            "pull-dataset": pull_dataset,
+            "download-dataset": download_dataset,
             "gunzip-dataset": gunzip_dataset,
             "train-model": train_model,
         }

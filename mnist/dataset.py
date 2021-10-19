@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from typing import Tuple
 
+import dvc.api
 from dvc.repo import Repo
 from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets
@@ -10,19 +11,35 @@ from torchvision import datasets
 from .config import MnistConfig
 
 
-def pull_dataset(repo_root: str = str(MnistConfig.repo_root)) -> None:
+def download_dataset(
+    repo_root: str = MnistConfig.repo_root,
+    raw_directory: str = MnistConfig.raw_directory,
+    remote_repo: str = MnistConfig.remote_repo,
+    remote_path: str = MnistConfig.remote_path,
+) -> None:
     """Pull dataset from remote"""
+    Path(raw_directory).mkdir(parents=True, exist_ok=True)
     repo = Repo(repo_root)
-    repo.pull()
+    files = repo.ls(remote_repo, remote_path)
+    for file in files:
+        full_remote_path = os.path.join(remote_path, file["path"])
+        full_local_path = os.path.join(raw_directory, file["path"])
+        with dvc.api.open(full_remote_path, repo=remote_repo, mode="rb") as remote:
+            print(f"Downloading {full_remote_path}")
+            with open(full_local_path, "wb") as local:
+                local.write(remote.read())
 
 
-def gunzip_dataset() -> None:
+def gunzip_dataset(
+    raw_directory: str = MnistConfig.raw_directory,
+    processed_directory: str = MnistConfig.processed_directory,
+) -> None:
     """Write train and test datasets"""
-    gzip_pattern = str(Path(MnistConfig.raw_directory) / "*.gz")
-    Path(MnistConfig.processed_directory).mkdir(parents=True, exist_ok=True)
+    Path(processed_directory).mkdir(parents=True, exist_ok=True)
+    gzip_pattern = str(Path(raw_directory) / "*.gz")
     for file_path in glob.glob(gzip_pattern):
         print(f"Extracting {file_path}")
-        datasets.utils.extract_archive(file_path, MnistConfig.processed_directory)
+        datasets.utils.extract_archive(file_path, processed_directory)
 
 
 class MnistDataset(Dataset):

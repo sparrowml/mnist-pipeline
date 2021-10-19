@@ -23,8 +23,10 @@ class MnistConfig:
     max_epochs: int = 2
 
     # Paths
-    repo_root: Path = Path(os.environ.get("REPO_ROOT", "."))
+    repo_root: str = os.environ.get("REPO_ROOT", ".")
     data_root: Path = Path(os.environ.get("DATA_ROOT", "./data"))
+    remote_repo: str = "https://github.com/iterative/dataset-registry"
+    remote_path: str = "mnist/raw"
 
     @classmethod
     @property
