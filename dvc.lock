@@ -26,8 +26,8 @@ stages:
       md5: 799d9f92a8cb52c4ae75a657eb77a24e
       size: 1736
     - path: mnist/train.py
-      md5: 8261a43ddd610634b9953b2a1a690fa4
-      size: 2131
+      md5: c789d87e4ce1ebb53f93a255d819e23d
+      size: 2249
     params:
       mnist/config.py:
         MnistConfig.batch_size: 64
