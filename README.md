@@ -1,30 +1,13 @@
 # MNIST Classifier Pipeline
 A toy ML pipeline that creates a digit classifier with features that can be exported.
 
-```
-  +--------------+
-  | data/raw.dvc |
-  +--------------+
-          *
-          *
-          *
-+-----------------+
-| gunzip-datasets |
-+-----------------+
-          *
-          *
-          *
-  +-------------+
-  | train-model |
-  +-------------+
-```
-
 ## Quick Start
 
 You can reproduce the pipeline with the following commands:
 
 ```
-pip install .
+pip install poetry==1.1.6
+poetry install
 dvc repro
 ```
 
