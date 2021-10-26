@@ -1,10 +1,10 @@
-md5: 13f684acc3e74399cf9f3f191b416f83
+md5: f09687b52d67dd6da49bc21cfdbb4907
 frozen: true
 deps:
 - path: mnist/raw
   repo:
     url: https://github.com/iterative/dataset-registry
-    rev_lock: ca140591a21c6d75a7057d1e2eb3f51d3115c5f5
+    rev_lock: e6b2da5ff87fb146423e8e4fc01c299d09cac009
 outs:
 - md5: b6c29e96813679dd8c451c9b5ca86e2c.dir
   size: 11594722

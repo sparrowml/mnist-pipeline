@@ -1,18 +1,15 @@
 schema: '2.0'
 stages:
-  gunzip-datasets:
-    cmd: python main.py gunzip-datasets
+  gunzip-dataset:
+    cmd: python main.py gunzip-dataset
     deps:
     - path: data/raw
       md5: b6c29e96813679dd8c451c9b5ca86e2c.dir
       size: 11594722
       nfiles: 4
-    - path: mnist/config.py
-      md5: 21d70f66d66ce193c4317c6603e724d1
-      size: 908
     - path: mnist/dataset.py
-      md5: f2c54dd137acf416d3ec8453583c2d2d
-      size: 1601
+      md5: 799d9f92a8cb52c4ae75a657eb77a24e
+      size: 1736
     outs:
     - path: data/processed
       md5: d0193be11ab497254ec667a4864050d9.dir
@@ -25,16 +22,46 @@ stages:
       md5: d0193be11ab497254ec667a4864050d9.dir
       size: 54950048
       nfiles: 4
-    - path: mnist/config.py
-      md5: 21d70f66d66ce193c4317c6603e724d1
-      size: 908
-    - path: mnist/dataset.py
-      md5: f2c54dd137acf416d3ec8453583c2d2d
-      size: 1601
     - path: mnist/train.py
-      md5: 8261a43ddd610634b9953b2a1a690fa4
-      size: 2131
+      md5: ecde3c7728b0889eff80d061a198d8a1
+      size: 2171
+    params:
+      mnist/config.py:
+        MnistConfig.batch_size: 64
+        MnistConfig.learning_rate: 0.05
+        MnistConfig.max_epochs: 1
+        MnistConfig.random_seed: 12345
+    outs:
+    - path: data/model.ckpt
+      md5: 27b4b9cc9a694be8653df4e97286556e
+      size: 9612747
+  evaluate-model:
+    cmd: python main.py evaluate-model
+    deps:
+    - path: data/model.ckpt
+      md5: 27b4b9cc9a694be8653df4e97286556e
+      size: 9612747
+    - path: data/processed
+      md5: d0193be11ab497254ec667a4864050d9.dir
+      size: 54950048
+      nfiles: 4
+    - path: mnist/evaluate.py
+      md5: 4d5af07611b7ff18d8247e00e9a5894b
+      size: 685
+    outs:
+    - path: data/metrics.json
+      md5: cabd18ce7371f20f74a7539849ad3b86
+      size: 32
+  save-features:
+    cmd: python main.py save-features
+    deps:
+    - path: data/model.ckpt
+      md5: 27b4b9cc9a694be8653df4e97286556e
+      size: 9612747
+    - path: mnist/deploy.py
+      md5: d88558ab4e44a4a7a5a3bbae9aec77b5
+      size: 454
     outs:
     - path: data/features.pt
-      md5: 573d9ad36de1ff74addc6d4f50e01354
+      md5: 1f9b799f3b0305f6c0083004ab038b97
       size: 80459

@@ -3,7 +3,6 @@
   "build": {
     "dockerfile": "../Dockerfile",
   },
-  // Set *default* container specific settings.json values on container create.
   "settings": {
     "python.pythonPath": "/usr/local/bin/python",
     "python.languageServer": "Pylance",
@@ -12,18 +11,17 @@
     "python.formatting.provider": "black",
     "editor.formatOnSave": true,
   },
-  // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
     "ms-python.python",
     "ms-python.vscode-pylance"
   ],
   "mounts": [
     "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached,readonly",
-    "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached",
   ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=/code,type=bind",
+  "workspaceFolder": "/code",
   "runArgs": [
     "--env-file",
     ".env"
   ],
-  "postCreateCommand": "poetry install"
 }

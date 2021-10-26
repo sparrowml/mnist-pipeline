@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "mnist-pipeline"
-version = "0.3.0"
+version = "0.4.0"
 description = "A toy ML pipeline that creates a digit classifier with features that can be exported."
-authors = ["Ben Cook <jbenjamincook@gmail.com>"]
+authors = ["Ben Cook <ben@sparrow.dev>"]
 license = "MIT"
 packages = [
     { include = "mnist" }
@@ -19,9 +19,9 @@ python-dotenv = "^0.17.1"
 
 [tool.poetry.dev-dependencies]
 ipykernel = "^5.5.5"
-dvc = {extras = ["s3"], version = "^2.7.4"}
 black = "^21.6b0"
 awscli = "~1.19.106"
+dvc = {extras = ["s3"], version = "^2.7.4"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

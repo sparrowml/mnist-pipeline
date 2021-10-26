@@ -1,3 +1,4 @@
-/features.pt
-/processed
 /raw
+/processed
+/features.pt
+/model.ckpt

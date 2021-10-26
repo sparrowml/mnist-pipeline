@@ -9,6 +9,18 @@ from torchvision import datasets
 from .config import MnistConfig
 
 
+def gunzip_dataset(
+    raw_directory: str = MnistConfig.raw_directory,
+    processed_directory: str = MnistConfig.processed_directory,
+) -> None:
+    """Write train and test datasets"""
+    Path(processed_directory).mkdir(parents=True, exist_ok=True)
+    gzip_pattern = str(Path(raw_directory) / "*.gz")
+    for file_path in glob.glob(gzip_pattern):
+        print(f"Extracting {file_path}")
+        datasets.utils.extract_archive(file_path, processed_directory)
+
+
 class MnistDataset(Dataset):
     def __init__(self, data_path: str, train: bool) -> None:
         holdout_prefix = "train" if train else "t10k"
@@ -26,15 +38,6 @@ class MnistDataset(Dataset):
         return x, y
 
 
-def gunzip_datasets() -> None:
-    """Write train and test datasets"""
-    gzip_pattern = str(Path(MnistConfig.raw_directory) / "*.gz")
-    Path(MnistConfig.processed_directory).mkdir(parents=True, exist_ok=True)
-    for file_path in glob.glob(gzip_pattern):
-        print(f"Extracting {file_path}")
-        datasets.utils.extract_archive(file_path, MnistConfig.processed_directory)
-
-
 def load_dataset(
     train: bool = True,
     batch_size: int = MnistConfig.batch_size,
@@ -44,6 +47,7 @@ def load_dataset(
     dataset = MnistDataset(config.processed_directory, train=train)
     return DataLoader(
         dataset,
+        shuffle=train,  # Turn shuffle off for dev set
         batch_size=config.batch_size,
         num_workers=config.num_workers,
     )
