@@ -19,7 +19,7 @@ class MnistConfig:
 
     # Train
     random_seed: int = 12345
-    learning_rate: float = 0.05
+    learning_rate: float = 0.04
     max_epochs: int = 1
 
     # Paths
