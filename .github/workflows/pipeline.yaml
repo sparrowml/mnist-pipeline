@@ -29,6 +29,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |      
           dvc push -r s3 data/features.pt
           cml pr dvc.lock
