@@ -4,6 +4,9 @@ version = "0.4.0"
 description = "A toy ML pipeline that creates a digit classifier with features that can be exported."
 authors = ["Ben Cook <ben@sparrow.dev>"]
 license = "MIT"
+packages = [
+    { include = "mnist" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"

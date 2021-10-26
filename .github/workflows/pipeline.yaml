@@ -12,5 +12,7 @@ jobs:
           python-version: 3.9
       - name: Test pipeline
         run: |
-          make install
-          make pipeline
+          pip install .
+          dvc pull data/raw
+          dvc exp run
+          dvc push data/features.pt
