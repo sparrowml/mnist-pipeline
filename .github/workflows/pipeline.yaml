@@ -17,8 +17,10 @@ jobs:
           poetry install
           dvc pull data/raw
           dvc repro
-      - name: CML report
+      - name: Report changes and push
         env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git fetch --prune --unshallow
@@ -27,12 +29,6 @@ jobs:
             echo "## Metrics" >> report.md            
             dvc metrics diff main --show-md >> report.md
             cml send-comment report.md
+            dvc push -r s3 data/features.pt
+            cml pr dvc.lock data/metrics.json            
           fi
-      - name: Push model and commit dvc.lock
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |      
-          dvc push -r s3 data/features.pt
-          cml pr dvc.lock data/metrics.json
