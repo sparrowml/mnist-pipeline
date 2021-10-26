@@ -21,10 +21,10 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          git fetch --prune --unshallow
           if [ -z "$(dvc metrics diff main)" ]
           then
-            echo "## Metrics" >> report.md
-            git fetch --prune --unshallow
+            echo "## Metrics" >> report.md            
             dvc metrics diff main --show-md >> report.md
             cml send-comment report.md
           fi
@@ -35,4 +35,4 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |      
           dvc push -r s3 data/features.pt
-          cml pr .
+          cml pr dvc.lock data/metrics.json
