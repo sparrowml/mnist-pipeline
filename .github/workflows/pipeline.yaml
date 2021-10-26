@@ -1,18 +1,22 @@
-name: test-pipeline
+name: pipeline
 
 on: push
 
 jobs:
-  build:
+  pipeline:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Test pipeline
+      - name: Run pipeline
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}      
         run: |
-          pip install .
+          pip install poetry==1.1.6
+          poetry install
           dvc pull data/raw
           dvc exp run
-          dvc push data/features.pt
+          dvc push -r s3 data/features.pt
