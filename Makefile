@@ -5,13 +5,10 @@ install:
 import-dataset:
 	dvc import https://github.com/iterative/dataset-registry mnist/raw -o data/raw
 
-pull-data:
+pull:
 	dvc pull data/raw
 
-pull-model:
-	dvc pull data/features.pt
-
-push-model:
+push:
 	dvc push -r s3 data/features.pt
 
 pipeline: pull-data

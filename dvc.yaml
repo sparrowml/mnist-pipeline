@@ -10,7 +10,6 @@ stages:
     cmd: python main.py train-model
     deps:
     - data/processed
-    - mnist/dataset.py
     - mnist/train.py
     params:
     - mnist/config.py:
@@ -20,5 +19,21 @@ stages:
       - MnistConfig.random_seed
       - MnistConfig.learning_rate
       - MnistConfig.max_epochs
+    outs:
+    - data/model.ckpt
+  evaluate-model:
+    cmd: python main.py evaluate-model
+    deps:
+    - data/processed
+    - data/model.ckpt
+    - mnist/evaluate.py
+    metrics:
+    - data/metrics.json:
+        cache: false
+  save-features:
+    cmd: python main.py save-features
+    deps:
+    - data/model.ckpt
+    - mnist/deploy.py
     outs:
     - data/features.pt

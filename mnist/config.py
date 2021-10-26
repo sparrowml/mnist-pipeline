@@ -37,5 +37,15 @@ class MnistConfig:
 
     @classmethod
     @property
+    def model_checkpoint_path(self) -> str:
+        return str(self.data_root / "model.ckpt")
+
+    @classmethod
+    @property
     def feature_weights_path(self) -> str:
         return str(self.data_root / "features.pt")
+
+    @classmethod
+    @property
+    def metrics_path(self) -> str:
+        return str(self.data_root / "metrics.json")
