@@ -5,7 +5,6 @@ on: push
 jobs:
   pipeline:
     runs-on: ubuntu-latest
-    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -21,6 +20,7 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          npm i -g @dvcorg/cml
           echo "## Metrics" >> report.md
           dvc metrics diff main --show-md >> report.md
           cml send-comment report.md
