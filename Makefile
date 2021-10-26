@@ -8,8 +8,8 @@ import-dataset:
 pull:
 	dvc pull data/raw
 
-push:
+push: pipeline
 	dvc push -r s3 data/features.pt
 
-pipeline: pull-data
+pipeline: pull
 	dvc repro
