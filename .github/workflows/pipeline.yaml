@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: iterative/setup-cml@v1
       - uses: actions/setup-python@v2
         with:
           python-version: 3.9
@@ -20,8 +21,8 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm i -g @dvcorg/cml
           echo "## Metrics" >> report.md
+          git fetch --prune --unshallow
           dvc metrics diff main --show-md >> report.md
           cml send-comment report.md
       - name: Push model and commit dvc.lock
