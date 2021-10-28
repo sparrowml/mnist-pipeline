@@ -24,12 +24,14 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: dvc metrics diff main
         run: |
-          echo "## Metrics" >> report.md            
-          dvc metrics diff main --show-md >> report.md
-          cml send-comment report.md
-          dvc push -r s3 data/features.pt
+          if [ -z "$(dvc metrics diff main)" ]
+          then
+            echo "## Metrics" >> report.md            
+            dvc metrics diff main --show-md >> report.md
+            cml send-comment report.md
+            dvc push -r s3 data/features.pt
+          fi
       - name: Push feature weights
         if: github.ref == 'refs/heads/main'
         run: |
