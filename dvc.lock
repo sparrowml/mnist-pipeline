@@ -28,18 +28,18 @@ stages:
     params:
       mnist/config.py:
         MnistConfig.batch_size: 64
-        MnistConfig.learning_rate: 0.04
+        MnistConfig.learning_rate: 0.045
         MnistConfig.max_epochs: 1
         MnistConfig.random_seed: 12345
     outs:
     - path: data/model.ckpt
-      md5: d027613abf50c4240974568805cb633e
+      md5: 825732fd0988bb851866e313cbf59726
       size: 9612747
   evaluate-model:
     cmd: python main.py evaluate-model
     deps:
     - path: data/model.ckpt
-      md5: d027613abf50c4240974568805cb633e
+      md5: 825732fd0988bb851866e313cbf59726
       size: 9612747
     - path: data/processed
       md5: d0193be11ab497254ec667a4864050d9.dir
@@ -50,18 +50,18 @@ stages:
       size: 685
     outs:
     - path: data/metrics.json
-      md5: 27a2f9d2664b386d204be07f0998d278
+      md5: e29a58e2d03d97d9e7a1220d84c36eba
       size: 32
   save-features:
     cmd: python main.py save-features
     deps:
     - path: data/model.ckpt
-      md5: d027613abf50c4240974568805cb633e
+      md5: 825732fd0988bb851866e313cbf59726
       size: 9612747
     - path: mnist/deploy.py
       md5: d88558ab4e44a4a7a5a3bbae9aec77b5
       size: 454
     outs:
     - path: data/features.pt
-      md5: fce71e59245da383ac2d7b8ac5e8c741
+      md5: d565468e0df8a976e6e41843819b4af0
       size: 80459
