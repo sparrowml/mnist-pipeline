@@ -19,7 +19,7 @@ python-dotenv = "^0.17.1"
 
 [tool.poetry.dev-dependencies]
 ipykernel = "^5.5.5"
-black = "^21.6b0"
+black = "^24.3"
 awscli = "^1.19.106"
 dvc = {extras = ["s3"], version = "^2.7.4"}
 
